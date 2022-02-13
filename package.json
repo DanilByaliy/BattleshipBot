@@ -4,7 +4,9 @@
   "description": "telegram bot game",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint ./lib",
+    "lint:fix": "eslint ./lib --fix"
   },
   "repository": {
     "type": "git",
@@ -15,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/DanilByaliy/BattleshipBot/issues"
   },
-  "homepage": "https://github.com/DanilByaliy/BattleshipBot#readme"
+  "homepage": "https://github.com/DanilByaliy/BattleshipBot#readme",
+  "devDependencies": {
+    "eslint": "^8.9.0"
+  }
 }
