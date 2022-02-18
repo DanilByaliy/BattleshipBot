@@ -1,6 +1,6 @@
 const TelegramBot = require('node-telegram-bot-api');
 require('dotenv').config();
-const { drawingGameBoard } = require('./lib/drawing.js');
+const { drawingGameBoard, drawingGoodShot } = require('./lib/drawing.js');
 const token = process.env.MY_TELEGRAM_BOT_TOKEN;
 const chatId = process.env.MY_TELEGRAM_CHAT_ID;
 
@@ -20,5 +20,8 @@ function sendPicture() {
   console.log(chatId);
   bot.sendPhoto(chatId, './board.png');
 }
+// Test
 
-drawingGameBoard(sendPicture);
+drawingGameBoard(sendPicture)
+  .then(() => drawingGoodShot(sendPicture, 1, 1))
+  .then(() => drawingGoodShot(sendPicture, 1, 2));
