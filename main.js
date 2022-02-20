@@ -25,5 +25,5 @@ function sendPicture() {
 // Test
 
 drawingGameBoard(sendPicture)
-  .then(() => placeAllShips(sendPicture));
-// .then(() => drawingGoodShot(sendPicture, 1, 1));
+  .then(() => placeAllShips(sendPicture))
+  .then(() => drawingGoodShot(sendPicture, 1, 1));
