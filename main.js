@@ -17,9 +17,10 @@ const bot = new TelegramBot(token, {
   }
 });
 
-function sendPicture() {
+function sendPicture(resolve) {
+  bot.sendPhoto(chatId, './board.png')
+    .then(() => resolve('result'));
   console.log(chatId);
-  bot.sendPhoto(chatId, './board.png');
 }
 
 // Test
