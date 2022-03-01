@@ -19,6 +19,11 @@
   },
   "homepage": "https://github.com/DanilByaliy/BattleshipBot#readme",
   "devDependencies": {
-    "eslint": "^8.9.0"
-  }
+    "dotenv": "^16.0.0",
+    "eslint": "^8.9.0",
+    "node-telegram-bot-api": "^0.56.0",
+    "nodemon": "^2.0.15",
+    "pureimage": "^0.3.8"
+  },
+  "dependencies": {}
 }
