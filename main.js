@@ -42,7 +42,30 @@ bot.onText(/\/game (.+)/, (msg, [source, match]) => {
     return;
   }
   bot.sendMessage(chatId, 'Виклик кинуто');
-  bot.sendMessage(userBase[user], `Прийняти виклик від @${username}?`);
+  bot.sendMessage(userBase[user], `Прийняти виклик від @${username}?`, {
+    reply_markup: {
+      inline_keyboard: [
+        [
+          {
+            text: 'Yes',
+            callback_data: 'y' + chatId
+          }
+        ],
+        [
+          {
+            text: 'No',
+            callback_data: 'n' + chatId
+          }
+        ]
+      ]
+    }
+  });
+});
+
+bot.on('callback_query', (query) => {
+  if (query.data.slice(0, 1) === 'y') {
+    bot.sendMessage(query.data.slice(1, 11), 'Виклик прийнято!');
+  } else bot.sendMessage(query.data.slice(1, 11), 'Виклик відхилено..');
 });
 
 // Test
