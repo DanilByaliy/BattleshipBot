@@ -63,9 +63,8 @@ bot.onText(/\/game (.+)/, (msg, [source, match]) => {
 });
 
 bot.on('callback_query', (query) => {
-  if (query.data.slice(0, 1) === 'y') {
-    bot.sendMessage(query.data.slice(1, 11), 'Виклик прийнято!');
-  } else bot.sendMessage(query.data.slice(1, 11), 'Виклик відхилено..');
+  const text = query.data[0] === 'y' ? 'прийнято!' : 'відхилено..';
+  bot.sendMessage(query.data.slice(1, 11), `Виклик ${text}`);
 });
 
 // Test
