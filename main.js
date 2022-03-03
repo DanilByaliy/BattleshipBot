@@ -50,14 +50,12 @@ bot.onText(/\/game (.+)/, (msg, [source, match]) => {
           {
             text: 'Yes',
             callback_data: 'y' + chatId + chatId2
-          }
-        ],
-        [
+          },
           {
             text: 'No',
             callback_data: 'n' + chatId + chatId2
           }
-        ]
+        ],
       ]
     }
   });
@@ -66,6 +64,48 @@ bot.onText(/\/game (.+)/, (msg, [source, match]) => {
 bot.on('callback_query', (query) => {
   const chatIdUser1 = query.data.slice(1, 11);
   const chatIdUser2 = query.data.slice(11, 21);
+  console.log([1, 2, 3, 4, 5, 6, 7].includes(query.data[0]));
+  console.log(query.data[0]);
+  console.log(chatIdUser1);
+
+  if ([1, 2, 3, 4, 5, 6, 7].includes(Number(query.data[0]))) {
+    bot.sendMessage(chatIdUser1, 'Добре, тепер вертикаль', {
+      reply_markup: {
+        inline_keyboard: [
+          [
+            {
+              text: 'a',
+              callback_data: 1
+            },
+            {
+              text: 'b',
+              callback_data: 2
+            },
+            {
+              text: 'c',
+              callback_data: 3
+            },
+            {
+              text: 'd',
+              callback_data: 4
+            },
+            {
+              text: 'e',
+              callback_data: 5
+            },
+            {
+              text: 'f',
+              callback_data: 6
+            },
+            {
+              text: 'g',
+              callback_data: 7
+            },
+          ]
+        ]
+      }
+    });
+  }
 
   if (query.data[0] === 'y') {
     bot.sendMessage(chatIdUser1, 'Виклик прийнято!');
