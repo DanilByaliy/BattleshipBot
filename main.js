@@ -1,11 +1,11 @@
+/* eslint-disable camelcase */
 const TelegramBot = require('node-telegram-bot-api');
 require('dotenv').config();
 const { drawingGameBoard, drawingGoodShot } = require('./lib/drawing.js');
-const { placeAllShips } = require('./lib/game.js');
+const { placeAllShips, start, check, getChatId,
+  game } = require('./lib/game.js');
 const token = process.env.MY_TELEGRAM_BOT_TOKEN;
 const chatId = process.env.MY_TELEGRAM_CHAT_ID;
-
-const userBase = new Object();
 
 console.log('Bot has been started....');
 
@@ -28,7 +28,7 @@ function sendPicture(resolve) {
 bot.onText(/\/start/, (msg) => {
   const chatId = msg.chat.id;
   const username = msg.chat.username;
-  userBase[username] = chatId;
+  start(username, chatId);
   bot.sendMessage(chatId, username + ' : ' + chatId);
 });
 
@@ -36,25 +36,26 @@ bot.onText(/\/game (.+)/, (msg, [source, match]) => {
   const chatId = msg.chat.id;
   const username = msg.chat.username;
   const user = match.slice(1);
+  const chatId2 = getChatId(user);
 
-  if (!Object.keys(userBase).includes(user)) {
+  if (check(user)) {
     bot.sendMessage(chatId, `Користувач @${user} не використовує цього бота`);
     return;
   }
   bot.sendMessage(chatId, 'Виклик кинуто');
-  bot.sendMessage(userBase[user], `Прийняти виклик від @${username}?`, {
+  bot.sendMessage(chatId2, `Прийняти виклик від @${username}?`, {
     reply_markup: {
       inline_keyboard: [
         [
           {
             text: 'Yes',
-            callback_data: 'y' + chatId
+            callback_data: 'y' + chatId + chatId2
           }
         ],
         [
           {
             text: 'No',
-            callback_data: 'n' + chatId
+            callback_data: 'n' + chatId + chatId2
           }
         ]
       ]
@@ -63,12 +64,17 @@ bot.onText(/\/game (.+)/, (msg, [source, match]) => {
 });
 
 bot.on('callback_query', (query) => {
-  const text = query.data[0] === 'y' ? 'прийнято!' : 'відхилено..';
-  bot.sendMessage(query.data.slice(1, 11), `Виклик ${text}`);
+  const chatIdUser1 = query.data.slice(1, 11);
+  const chatIdUser2 = query.data.slice(11, 21);
+
+  if (query.data[0] === 'y') {
+    bot.sendMessage(chatIdUser1, 'Виклик прийнято!');
+    game(chatIdUser1, chatIdUser2, bot);
+  }
 });
 
 // Test
 
-drawingGameBoard(sendPicture)
-  .then(() => placeAllShips(sendPicture))
-  .then(() => drawingGoodShot(sendPicture, 1, 1));
+// drawingGameBoard(sendPicture)
+//   .then(() => placeAllShips(sendPicture))
+//   .then(() => drawingGoodShot(sendPicture, 1, 1));
