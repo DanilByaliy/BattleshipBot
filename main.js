@@ -49,11 +49,11 @@ bot.onText(/\/game (.+)/, (msg, [source, match]) => {
         [
           {
             text: 'Yes',
-            callback_data: 'y' + chatId + chatId2
+            callback_data: 'ye' + chatId + chatId2
           },
           {
             text: 'No',
-            callback_data: 'n' + chatId + chatId2
+            callback_data: 'no' + chatId + chatId2
           }
         ],
       ]
@@ -62,10 +62,10 @@ bot.onText(/\/game (.+)/, (msg, [source, match]) => {
 });
 
 bot.on('callback_query', (query) => {
-  const chatIdUser1 = query.data.slice(1, 11);
-  const chatIdUser2 = query.data.slice(11, 21);
+  const chatIdUser1 = query.data.slice(2, 12);
+  const chatIdUser2 = query.data.slice(12, 22);
   console.log([1, 2, 3, 4, 5, 6, 7].includes(query.data[0]));
-  console.log(query.data[0]);
+  console.log(query.data[0][0]);
   console.log(chatIdUser1);
 
   if ([1, 2, 3, 4, 5, 6, 7].includes(Number(query.data[0]))) {
@@ -75,31 +75,31 @@ bot.on('callback_query', (query) => {
           [
             {
               text: 'a',
-              callback_data: 1
+              callback_data: `a${query.data[0]}` + chatIdUser1
             },
             {
               text: 'b',
-              callback_data: 2
+              callback_data: `b${query.data[0]}` + chatIdUser1
             },
             {
               text: 'c',
-              callback_data: 3
+              callback_data: `c${query.data[0]}` + chatIdUser1
             },
             {
               text: 'd',
-              callback_data: 4
+              callback_data: `d${query.data[0]}` + chatIdUser1
             },
             {
               text: 'e',
-              callback_data: 5
+              callback_data: `e${query.data[0]}` + chatIdUser1
             },
             {
               text: 'f',
-              callback_data: 6
+              callback_data: `f${query.data[0]}` + chatIdUser1
             },
             {
               text: 'g',
-              callback_data: 7
+              callback_data: `g${query.data[0]}` + chatIdUser1
             },
           ]
         ]
