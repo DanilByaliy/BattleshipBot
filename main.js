@@ -64,9 +64,6 @@ bot.onText(/\/game (.+)/, (msg, [source, match]) => {
 bot.on('callback_query', (query) => {
   const chatIdUser1 = query.data.slice(2, 12);
   const chatIdUser2 = query.data.slice(12, 22);
-  console.log([1, 2, 3, 4, 5, 6, 7].includes(query.data[0]));
-  console.log(query.data[0][0]);
-  console.log(chatIdUser1);
 
   if ([1, 2, 3, 4, 5, 6, 7].includes(Number(query.data[0]))) {
     bot.sendMessage(chatIdUser1, 'Добре, тепер вертикаль', {
