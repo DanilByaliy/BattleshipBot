@@ -65,45 +65,6 @@ bot.on('callback_query', (query) => {
   const chatIdUser1 = query.data.slice(2, 12);
   const chatIdUser2 = query.data.slice(12, 22);
 
-  if ([1, 2, 3, 4, 5, 6, 7].includes(Number(query.data[0]))) {
-    bot.sendMessage(chatIdUser1, 'Добре, тепер вертикаль', {
-      reply_markup: {
-        inline_keyboard: [
-          [
-            {
-              text: 'a',
-              callback_data: `a${query.data[0]}` + chatIdUser1
-            },
-            {
-              text: 'b',
-              callback_data: `b${query.data[0]}` + chatIdUser1
-            },
-            {
-              text: 'c',
-              callback_data: `c${query.data[0]}` + chatIdUser1
-            },
-            {
-              text: 'd',
-              callback_data: `d${query.data[0]}` + chatIdUser1
-            },
-            {
-              text: 'e',
-              callback_data: `e${query.data[0]}` + chatIdUser1
-            },
-            {
-              text: 'f',
-              callback_data: `f${query.data[0]}` + chatIdUser1
-            },
-            {
-              text: 'g',
-              callback_data: `g${query.data[0]}` + chatIdUser1
-            },
-          ]
-        ]
-      }
-    });
-  }
-
   if (query.data[0] === 'y') {
     bot.sendMessage(chatIdUser1, 'Виклик прийнято!');
     game(chatIdUser1, chatIdUser2, bot);
