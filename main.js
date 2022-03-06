@@ -19,12 +19,6 @@ const bot = new TelegramBot(token, {
   }
 });
 
-function sendPicture(resolve) {
-  bot.sendPhoto(chatId, './board.png')
-    .then(() => resolve('result'));
-  console.log(chatId);
-}
-
 bot.onText(/\/start/, (msg) => {
   const chatId = msg.chat.id;
   const username = msg.chat.username;
