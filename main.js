@@ -10,13 +10,14 @@ const chatId = process.env.MY_TELEGRAM_CHAT_ID;
 console.log('Bot has been started....');
 
 const bot = new TelegramBot(token, {
-  polling: {
-    interval: 300,
-    autoStart: true,
-    params: {
-      timeout: 10
-    }
-  }
+  polling: true
+  // {
+  //   interval: 300,
+  //   autoStart: true,
+  //   params: {
+  //     timeout: 10
+  //   }
+  // }
 });
 
 bot.onText(/\/start/, (msg) => {
