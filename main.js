@@ -1,23 +1,19 @@
 /* eslint-disable camelcase */
 const TelegramBot = require('node-telegram-bot-api');
 require('dotenv').config();
-const { drawingGameBoard, drawingGoodShot } = require('./lib/drawing.js');
-const { placeAllShips, start, check, getChatId,
-  game } = require('./lib/game.js');
+const { start, check, getChatId, game } = require('./lib/game.js');
 const token = process.env.MY_TELEGRAM_BOT_TOKEN;
-const chatId = process.env.MY_TELEGRAM_CHAT_ID;
 
 console.log('Bot has been started....');
 
 const bot = new TelegramBot(token, {
-  polling: true
-  // {
-  //   interval: 300,
-  //   autoStart: true,
-  //   params: {
-  //     timeout: 10
-  //   }
-  // }
+  polling: {
+    interval: 300,
+    autoStart: true,
+    params: {
+      timeout: 10
+    }
+  }
 });
 
 bot.onText(/\/start/, (msg) => {
@@ -65,9 +61,3 @@ bot.on('callback_query', (query) => {
     game(chatIdUser1, chatIdUser2, bot);
   }
 });
-
-// Test
-
-// drawingGameBoard(sendPicture)
-//   .then(() => placeAllShips(sendPicture))
-//   .then(() => drawingGoodShot(sendPicture, 1, 1));
