@@ -1,8 +1,10 @@
 /* eslint-disable camelcase */
 const TelegramBot = require('node-telegram-bot-api');
 require('dotenv').config();
-const { start, check, getChatId, game } = require('./lib/game.js');
+const { start, check, getChatId, game } = require('./utils/game.js.js.js');
 const token = process.env.MY_TELEGRAM_BOT_TOKEN;
+
+const hendler = require('./routers/hendler.js')
 
 console.log('Bot has been started....');
 
