@@ -106,3 +106,6 @@ dist
 # Other folders and files
 gameBoards/
 userBase.txt
+package-lock.json
+CourierNewPS-BoldMT.ttf
+git rm --cached
