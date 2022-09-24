@@ -1,29 +1,7 @@
 {
-  "name": "battleshipbot",
-  "version": "1.0.0",
-  "description": "telegram bot game",
-  "main": "main.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint ./lib",
-    "lint:fix": "eslint ./lib --fix"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/DanilByaliy/BattleshipBot.git"
-  },
-  "author": "Byaliy Danil",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/DanilByaliy/BattleshipBot/issues"
-  },
-  "homepage": "https://github.com/DanilByaliy/BattleshipBot#readme",
-  "devDependencies": {
-    "dotenv": "^16.0.0",
-    "eslint": "^8.9.0",
-    "node-telegram-bot-api": "^0.56.0",
-    "nodemon": "^2.0.15",
-    "pureimage": "^0.3.8"
-  },
-  "dependencies": {}
+  "dependencies": {
+    "dotenv": "^16.0.2",
+    "eslint": "^8.24.0",
+    "express": "^4.18.1"
+  }
 }
