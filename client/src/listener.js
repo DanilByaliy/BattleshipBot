@@ -1,9 +1,8 @@
-module.exports = (bot) => {
-    const axios = require('axios');
+const userController = require('./Controllers/userController')
 
-    bot.onText(/\/start/, (msg) => {
+const listener = (bot) => {
 
-    });
+    bot.onText(/\/start/, controller());
 
     bot.onText(/\/game (.+)/, (msg, [source, match]) => {
         
@@ -13,3 +12,5 @@ module.exports = (bot) => {
 
     });
 }
+
+module.exports = listener;
