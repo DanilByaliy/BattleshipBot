@@ -2,6 +2,8 @@
 
 class Field {
     value
+    neighborCells = [[-1, -1], [-1, 0], [-1, 1], 
+        [0, 1], [1, 1], [1, 0], [1, -1], [0, -1]]
 
     createRandomField() {
         this.setInitialField()
@@ -54,6 +56,8 @@ class Field {
     
         if (random) this.placeThreeDeskShipVerticallyFrom(row, col);
         else this.placeThreeDeskShipHorisontallyFrom(row, col);
+
+        this.makeWrapOf('3', '7');
     }
     
     placeThreeDeskShipHorisontallyFrom(row, col) {
@@ -84,6 +88,7 @@ class Field {
     
         this.value[row2][col2] = `2${n + 1}`;
         this.value[row22][col22] = `2${n + 1}`;
+        this.makeWrapOf(`2${n + 1}`, '7');
     }
     
     placeOneDeskShip(n) {
@@ -95,5 +100,22 @@ class Field {
         } while (this.value[row][col] !== 0);
       
         this.value[row][col] = `1${n + 1}`;
+        this.makeWrapOf(`1${n + 1}`, '7');
     }
+
+    makeWrapOf(ship, wrapCell) {
+        for (let x = 0; x < 9; x++) {
+          for (let y = 0; y < 9; y++) {
+            if (this.value[x][y] === ship) {
+              this.neighborCells.forEach((val) => {
+                const [a, b] = val;
+    
+                if (this.value[x + a][y + b] !== ship) {
+                  this.value[x + a][y + b] = wrapCell;
+                }
+              })
+            }
+          }
+        }
+      }
 }
