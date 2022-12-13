@@ -67,4 +67,33 @@ class Field {
             this.value[row][col + i] = '3';
         }
     }
+
+    placeTwoDeskShip(n) {
+        let row2, col2, row22, col22;
+        const random = Math.random() > 0.5;
+      
+        do {
+            row22 = row2 = Math.round(Math.random() * 6) + 1;
+            col22 = col2 = Math.round(Math.random() * 6) + 1;
+    
+            if (random) {
+                row22 = row2 + 1;
+            } else col22 = col2 + 1;
+    
+        } while (this.value[row2][col2] !== 0 || this.value[row22][col22] !== 0);
+    
+        this.value[row2][col2] = `2${n + 1}`;
+        this.value[row22][col22] = `2${n + 1}`;
+    }
+    
+    placeOneDeskShip(n) {
+        let row, col = 0;
+    
+        do {
+            row = Math.round(Math.random() * 6) + 1;
+            col = Math.round(Math.random() * 6) + 1;
+        } while (this.value[row][col] !== 0);
+      
+        this.value[row][col] = `1${n + 1}`;
+    }
 }
