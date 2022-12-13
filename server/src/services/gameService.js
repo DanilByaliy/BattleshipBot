@@ -46,4 +46,25 @@ class Field {
             this.value[i][8] = 9;
         }
     }
+
+    placeThreeDeskShip() {
+        const row = Math.round(Math.random() * 4) + 1;
+        const col = Math.round(Math.random() * 4) + 1;
+        const random = Math.random() > 0.5;
+    
+        if (random) this.placeThreeDeskShipVerticallyFrom(row, col);
+        else this.placeThreeDeskShipHorisontallyFrom(row, col);
+    }
+    
+    placeThreeDeskShipHorisontallyFrom(row, col) {
+        for (let i = 0; i < 3; i++) {
+            this.value[row + i][col] = '3';
+        }
+    }
+    
+    placeThreeDeskShipVerticallyFrom(row, col) {
+        for (let i = 0; i < 3; i++) {
+            this.value[row][col + i] = '3';
+        }
+    }
 }
