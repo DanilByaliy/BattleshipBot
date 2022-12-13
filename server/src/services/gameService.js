@@ -131,7 +131,7 @@ class GameService {
         firstTwoDeck: 2,
         secondTwoDeck: 2,
     };
-    
+
     state = {
         gameId: '',
         currentPlayer: '',
@@ -142,6 +142,45 @@ class GameService {
 
     constructor(db) {
         this.db = db;
+    }
+
+    createGameFor(players) {
+        this.setPlayers(players);
+        this.setRandomFields();
+        this.setInitialCharacteristic();
+        this.setId();
+        this.save();
+        return this.state;
+    }
+
+    setPlayers(players) {
+        const { firstPlayerTag, secondPlayerTag } = players;
+        this.state.currentPlayer = firstPlayerTag;
+        this.state.opponentPlayer = secondPlayerTag;
+    }
+
+    setRandomFields() {
+        const firstPlayerTag = this.state.currentPlayer;
+        const secondPlayerTag = this.state.opponentPlayer;
+    
+        this.state[firstPlayerTag] = {}
+        this.state[firstPlayerTag] = {}
+    
+        this.state[firstPlayerTag].field = this.field.createRandomField();
+        this.state[secondPlayerTag].field = this.field.createRandomField();
+    }
+
+    setInitialCharacteristic() {
+        this.state[this.state.currentPlayer].shipDesks = this.startShipDesks;
+        this.state[this.state.opponentPlayer].shipDesks = this.startShipDesks;
+    }
+    
+    setId() {
+        this.state.gameId = this.state.currentPlayer + this.state.opponentPlayer;
+    }
+    
+    save() {
+        this.db.save(this.state);
     }
 }
 
