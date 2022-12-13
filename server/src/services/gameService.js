@@ -1,5 +1,7 @@
 'use strict'
 
+const gameDAO = require('../dao/gameDAO');
+
 class Field {
     value
     neighborCells = [[-1, -1], [-1, 0], [-1, 1], 
@@ -119,3 +121,31 @@ class Field {
         }
       }
 }
+
+class GameService {
+    field = new Field();
+
+    startShipDesks = {
+        all: 10,
+        threeDeck: 3,
+        firstTwoDeck: 2,
+        secondTwoDeck: 2,
+    };
+    
+    state = {
+        gameId: '',
+        currentPlayer: '',
+        opponentPlayer: '',
+        gameOver: false,
+        lastShotResult: null,
+    };
+
+    constructor(db) {
+        this.db = db;
+    }
+}
+
+module.exports = {
+    GameService,
+    gameService: new GameService(gameDAO)
+};
