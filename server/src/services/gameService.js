@@ -182,6 +182,31 @@ class GameService {
     save() {
         this.db.save(this.state);
     }
+
+    getGameboardsFor(gameId) {
+        this.setStateFor(gameId);
+        const currentPlayer = this.state.currentPlayer;
+        const opponentPlayer = this.state.opponentPlayer;
+    
+        const currentPlayerRawField = this.state[this.state.currentPlayer].field;
+        const opponentPlayerRawField = this.state[this.state.opponentPlayer].field;
+    
+        this.field.parse(currentPlayerRawField);
+        const currentPlayerField = this.field.getField();
+    
+        this.field.parse(opponentPlayerRawField);
+        const opponentPlayerField = this.field.getField();
+    
+        return {
+            [currentPlayer]: currentPlayerField,
+            [opponentPlayer]: opponentPlayerField
+        }
+    }
+
+    getCurrentPlayer(gameId) {
+        this.setStateFor(gameId);
+        return this.state.currentPlayer;
+    }
 }
 
 module.exports = {
