@@ -127,13 +127,6 @@ class Field {
 class GameService {
     field = new Field();
 
-    startShipDesks = {
-        all: 10,
-        threeDeck: 3,
-        firstTwoDeck: 2,
-        secondTwoDeck: 2,
-    };
-
     state = {
         gameId: '',
         currentPlayer: '',
@@ -147,6 +140,7 @@ class GameService {
     }
 
     createGameFor(players) {
+        this.clearState();
         this.setPlayers(players);
         this.setRandomFields();
         this.setInitialCharacteristic();
@@ -156,12 +150,24 @@ class GameService {
     }
 
     createGameForTest(players) {
+        this.clearState();
         this.setPlayers(players);
         this.setConstFields();
         this.setInitialCharacteristic();
         this.setId();
         this.save();
         return this.state;
+    }
+
+    clearState() {
+        this.state = {
+            gameId: '',
+            currentPlayer: '',
+            opponentPlayer: '',
+            gameOver: false,
+            lastMessage: '',
+            lastShotStatus: null,
+        };
     }
 
     setPlayers(players) {
@@ -190,8 +196,19 @@ class GameService {
     }
 
     setInitialCharacteristic() {
-        this.state[this.state.currentPlayer].shipDesks = this.startShipDesks;
-        this.state[this.state.opponentPlayer].shipDesks = this.startShipDesks;
+        this.state[this.state.currentPlayer].shipDesks = {
+            all: 10,
+            threeDeck: 3,
+            firstTwoDeck: 2,
+            secondTwoDeck: 2,
+        };
+        
+        this.state[this.state.opponentPlayer].shipDesks = {
+            all: 10,
+            threeDeck: 3,
+            firstTwoDeck: 2,
+            secondTwoDeck: 2,
+        };
     }
     
     setId() {
