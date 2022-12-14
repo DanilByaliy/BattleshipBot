@@ -241,10 +241,43 @@ class GameService {
         }
     }
 
+    async getLastMessage(gameId) {
+        console.log(gameId);
+        await this.setStateFor(gameId);
+        return this.state.lastMessage;
+    }
+
     checkIsCurrentPlayer(player) {
         return this.state.currentPlayer === player;
     }
     
+    isSuccessShot(shotStatus) {
+        return shotStatus !== 'past';
+    }
+
+    updateGameCharacteristic(player, ship) {
+        this.state[player].shipDecks[ship] -= 1;
+        this.state[player].shipDecks.all -= 1;
+    }
+
+    checkIsOpponentHaveShips() {
+        const opponent = this.state.opponentPlayer;
+        return this.state[opponent].shipDecks.all === 0;
+    }
+
+    updateField(cell, shotStatus) {
+        this.field.updateField(cell, shotStatus);
+        this.state[this.state.opponentPlayer].field = this.field.getRawField();
+    }
+
+    checkIsGameOver() {
+        return this.state.gameOver;
+    }
+
+    gameOver() {
+        this.state.gameOver = true;
+    }
+
     changeCurrentPlayer() {
         const currentPlayer = this.state.currentPlayer;
         const opponentPlayer = this.state.opponentPlayer
