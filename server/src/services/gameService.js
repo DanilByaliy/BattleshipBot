@@ -185,6 +185,31 @@ class GameService {
         this.db.save(this.state);
     }
 
+    async shot(gameId, player, cell) {
+        this.setStateFor(gameId);
+        if (this.checkIsGameOver()) throw new Error('Game Over');
+        if (!this.checkIsCurrentPlayer(player)) throw new Error('Not your turn');
+    
+        const opponent = this.state.opponentPlayer
+    
+        this.field.parse(this.state[opponent].field);
+        this.field.showRaw();
+        const cellContent = this.field.getCellContent(cell);
+        const shotStatus = this.getShotStatus(cellContent);
+        this.state.lastShotStatus = shotStatus;
+    
+        this.updateField(cell, shotStatus);
+    
+        this.state.lastMessage = this.getMessageByStatus(shotStatus);
+        
+        if (this.isSuccessShot(shotStatus)) {
+            this.updateGameCharacteristic(opponent, cellContent);
+        } else this.changeCurrentPlayer();
+    
+        if (this.checkIsOpponentHaveShips()) this.gameOver()
+        this.save();
+    }
+
     getGameboardsFor(gameId) {
         this.setStateFor(gameId);
         const currentPlayer = this.state.currentPlayer;
