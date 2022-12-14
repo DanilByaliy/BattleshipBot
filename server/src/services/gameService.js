@@ -240,6 +240,27 @@ class GameService {
                 return `You didn't hit the enemy ship`;
         }
     }
+
+    checkIsCurrentPlayer(player) {
+        return this.state.currentPlayer === player;
+    }
+    
+    changeCurrentPlayer() {
+        const currentPlayer = this.state.currentPlayer;
+        const opponentPlayer = this.state.opponentPlayer
+        this.state.currentPlayer = opponentPlayer;
+        this.state.opponentPlayer = currentPlayer;
+    }
+
+    async getGameState(id) {
+        const state = await this.db.get(id);
+        if (!state) throw new Error('State with the specified ID does not exist');
+        return state;
+    }
+
+    async setStateFor(id) {
+        this.state = await this.getGameState(id);
+    }
 }
 
 module.exports = {
