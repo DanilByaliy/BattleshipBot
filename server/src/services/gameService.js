@@ -12,6 +12,8 @@ class Field {
         this.placeThreeDeskShip();
         this.placeTwoDeskShips();
         this.placeOneDeskShips();
+        this.createEnvelope();
+        return this.value;
     }
 
     setInitialField() {
@@ -206,6 +208,37 @@ class GameService {
     getCurrentPlayer(gameId) {
         this.setStateFor(gameId);
         return this.state.currentPlayer;
+    }
+
+    getShotStatus(cellContent) {
+        if (!this.isShip(cellContent)) return 'past';
+        if (this.hasShipSunk(cellContent)) return 'sunk';
+        else return 'shelled';
+    }
+
+    isShip(cellContent) {
+        return ['oneDeck', 'firstTwoDeck', 'secondTwoDeck', 'threeDeck']
+        .includes(cellContent);
+    }
+
+    hasShipSunk(typeOfShip) {
+        const opponent = this.state.opponentPlayer;
+        if (typeOfShip === 'oneDeck') return true
+        const numberOfDeck = this.state[opponent].shipDecks[typeOfShip]
+        console.log(typeOfShip);
+        console.log('num of deck:' + numberOfDeck);
+        return numberOfDeck === 1;
+    }
+
+    getMessageByStatus(status) {
+        switch (status) {
+            case 'sunk':
+                return 'The ship is sunk';
+            case 'shelled':
+                return 'The ship is shelled';
+            case 'past':
+                return `You didn't hit the enemy ship`;
+        }
     }
 }
 
