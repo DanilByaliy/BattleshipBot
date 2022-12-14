@@ -121,7 +121,34 @@ class Field {
             }
           }
         }
-      }
+    }
+
+    getCellContent(cell) {
+        const {x, y} = this.parseCellToCoordinates(cell);
+        const receivedCell = this.getCell(x, y);
+        switch (receivedCell) {
+            case '11':
+                return 'oneDeck'
+            case '12':
+                return 'oneDeck'
+            case '13':
+                return 'oneDeck'
+            case '21':
+                return 'firstTwoDeck'
+            case '22':
+                return 'secondTwoDeck'
+            case '3':
+                return 'threeDeck'
+            default:
+                return 'noShip'
+        }
+    }
+
+    parseCellToCoordinates(cell) {
+        const [xLetter, y] = cell.split('');
+        const x = [null, 'a', 'b', 'c', 'd', 'e', 'f', 'g'].indexOf(xLetter);
+        return {x, y};
+    }
 }
 
 class GameService {
