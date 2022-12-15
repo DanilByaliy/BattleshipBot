@@ -149,6 +149,43 @@ class Field {
         const x = [null, 'a', 'b', 'c', 'd', 'e', 'f', 'g'].indexOf(xLetter);
         return {x, y};
     }
+
+    updateField(cell, status) {
+        const {x, y} = this.parseCellToCoordinates(cell);
+    
+        switch (status) {
+            case 'sunk':
+                this.value[x][y] += '0';
+                const sunkShip = this.getCell(x, y);
+                this.makeWrapOf(sunkShip, '6');
+                break;
+            case 'shelled':
+                this.value[x][y] += '0';
+                break;
+            case 'past':
+                this.value[x][y] = '6';
+                break;
+        }
+    }
+
+    parse(field) {
+        this.value = field;
+    }
+
+    getRawField() {
+        return this.value;
+    }
+
+    getField() {
+        this.field = this.createEmptyFieldSizeOf(7);
+        for (let x = 1; x < 8; x++) {
+            for (let y = 1; y < 8; y++) {
+                this.normalizeCell(x, y)
+            }
+        }
+        this.show();
+        return this.field;
+    }
 }
 
 class GameService {
