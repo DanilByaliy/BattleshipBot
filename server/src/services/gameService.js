@@ -32,18 +32,6 @@ class Field {
         return field;
     }
 
-    placeTwoDeskShips() {
-        for (let i = 0; i < 2; i++) {
-            this.placeTwoDeskShip(i);
-        }
-    }
-
-    placeOneDeskShips() {
-        for (let i = 0; i < 3; i++) {
-            this.placeOneDeskShip(i);
-        }
-    }
-
     createEnvelope() {
         for (let i = 0; i < 9; i++) {
             this.value[0][i] = 9;
@@ -63,7 +51,7 @@ class Field {
 
         this.makeWrapOf('3', '7');
     }
-    
+
     placeThreeDeskShipHorisontallyFrom(row, col) {
         for (let i = 0; i < 3; i++) {
             this.value[row + i][col] = '3';
@@ -75,6 +63,19 @@ class Field {
             this.value[row][col + i] = '3';
         }
     }
+
+    placeTwoDeskShips() {
+        for (let i = 0; i < 2; i++) {
+            this.placeTwoDeskShip(i);
+        }
+    }
+
+    placeOneDeskShips() {
+        for (let i = 0; i < 3; i++) {
+            this.placeOneDeskShip(i);
+        }
+    }
+
 
     placeTwoDeskShip(n) {
         let row2, col2, row22, col22;
@@ -334,6 +335,85 @@ class GameService {
         this.save();
     }
 
+    async setStateFor(id) {
+        this.state = await this.getGameState(id);
+    }
+
+    async getGameState(id) {
+        const state = await this.db.get(id);
+        if (!state) throw new Error('State with the specified ID does not exist');
+        return state;
+    }
+
+    checkIsGameOver() {
+        return this.state.gameOver;
+    }
+
+    checkIsCurrentPlayer(player) {
+        return this.state.currentPlayer === player;
+    }
+
+    getShotStatus(cellContent) {
+        if (!this.isShip(cellContent)) return 'past';
+        if (this.hasShipSunk(cellContent)) return 'sunk';
+        else return 'shelled';
+    }
+
+    isShip(cellContent) {
+        return ['oneDeck', 'firstTwoDeck', 'secondTwoDeck', 'threeDeck']
+        .includes(cellContent);
+    }
+
+    hasShipSunk(typeOfShip) {
+        const opponent = this.state.opponentPlayer;
+        if (typeOfShip === 'oneDeck') return true
+        const numberOfDeck = this.state[opponent].shipDecks[typeOfShip]
+        console.log(typeOfShip);
+        console.log('num of deck:' + numberOfDeck);
+        return numberOfDeck === 1;
+    }
+
+    updateField(cell, shotStatus) {
+        this.field.updateField(cell, shotStatus);
+        this.state[this.state.opponentPlayer].field = this.field.getRawField();
+    }
+
+    getMessageByStatus(status) {
+        switch (status) {
+            case 'sunk':
+                return 'The ship is sunk';
+            case 'shelled':
+                return 'The ship is shelled';
+            case 'past':
+                return `You didn't hit the enemy ship`;
+        }
+    }
+
+    isSuccessShot(shotStatus) {
+        return shotStatus !== 'past';
+    }
+
+    updateGameCharacteristic(player, ship) {
+        this.state[player].shipDecks[ship] -= 1;
+        this.state[player].shipDecks.all -= 1;
+    }
+
+    changeCurrentPlayer() {
+        const currentPlayer = this.state.currentPlayer;
+        const opponentPlayer = this.state.opponentPlayer
+        this.state.currentPlayer = opponentPlayer;
+        this.state.opponentPlayer = currentPlayer;
+    }
+
+    checkIsOpponentHaveShips() {
+        const opponent = this.state.opponentPlayer;
+        return this.state[opponent].shipDecks.all === 0;
+    }
+
+    gameOver() {
+        this.state.gameOver = true;
+    }
+
     getGameboardsFor(gameId) {
         this.setStateFor(gameId);
         const currentPlayer = this.state.currentPlayer;
@@ -359,89 +439,10 @@ class GameService {
         return this.state.currentPlayer;
     }
 
-    getShotStatus(cellContent) {
-        if (!this.isShip(cellContent)) return 'past';
-        if (this.hasShipSunk(cellContent)) return 'sunk';
-        else return 'shelled';
-    }
-
-    isShip(cellContent) {
-        return ['oneDeck', 'firstTwoDeck', 'secondTwoDeck', 'threeDeck']
-        .includes(cellContent);
-    }
-
-    hasShipSunk(typeOfShip) {
-        const opponent = this.state.opponentPlayer;
-        if (typeOfShip === 'oneDeck') return true
-        const numberOfDeck = this.state[opponent].shipDecks[typeOfShip]
-        console.log(typeOfShip);
-        console.log('num of deck:' + numberOfDeck);
-        return numberOfDeck === 1;
-    }
-
-    getMessageByStatus(status) {
-        switch (status) {
-            case 'sunk':
-                return 'The ship is sunk';
-            case 'shelled':
-                return 'The ship is shelled';
-            case 'past':
-                return `You didn't hit the enemy ship`;
-        }
-    }
-
     async getLastMessage(gameId) {
         console.log(gameId);
         await this.setStateFor(gameId);
         return this.state.lastMessage;
-    }
-
-    checkIsCurrentPlayer(player) {
-        return this.state.currentPlayer === player;
-    }
-    
-    isSuccessShot(shotStatus) {
-        return shotStatus !== 'past';
-    }
-
-    updateGameCharacteristic(player, ship) {
-        this.state[player].shipDecks[ship] -= 1;
-        this.state[player].shipDecks.all -= 1;
-    }
-
-    checkIsOpponentHaveShips() {
-        const opponent = this.state.opponentPlayer;
-        return this.state[opponent].shipDecks.all === 0;
-    }
-
-    updateField(cell, shotStatus) {
-        this.field.updateField(cell, shotStatus);
-        this.state[this.state.opponentPlayer].field = this.field.getRawField();
-    }
-
-    checkIsGameOver() {
-        return this.state.gameOver;
-    }
-
-    gameOver() {
-        this.state.gameOver = true;
-    }
-
-    changeCurrentPlayer() {
-        const currentPlayer = this.state.currentPlayer;
-        const opponentPlayer = this.state.opponentPlayer
-        this.state.currentPlayer = opponentPlayer;
-        this.state.opponentPlayer = currentPlayer;
-    }
-
-    async getGameState(id) {
-        const state = await this.db.get(id);
-        if (!state) throw new Error('State with the specified ID does not exist');
-        return state;
-    }
-
-    async setStateFor(id) {
-        this.state = await this.getGameState(id);
     }
 
     getGameboardsFor(gameId) {
