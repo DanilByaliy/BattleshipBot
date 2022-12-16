@@ -150,6 +150,10 @@ class Field {
         return {x, y};
     }
 
+    getCell(x, y) {
+        return this.value[x][y];
+    }
+
     updateField(cell, status) {
         const {x, y} = this.parseCellToCoordinates(cell);
     
@@ -185,6 +189,47 @@ class Field {
         }
         this.show();
         return this.field;
+    }
+
+    normalizeCell(x, y) {
+        if (this.isEmptyCell(x, y)) this.markCellAsEmpty(x, y);
+        else if (this.isShipInCell(x, y)) this.markCellAsShip(x, y);
+        else if (this.isShelledShip(x, y)) this.markСellAsShelledShip(x, y);
+        else if (this.isFiredCell(x, y)) this.markCellAsFiredCell(x, y);
+    }
+
+    isEmptyCell(x, y) {
+        return ['7', 0].includes(this.value[x][y]);
+    }
+
+    markCellAsEmpty(x, y) {
+        this.field[x-1][y-1] = 0;
+    }
+
+    isShipInCell(x, y) {
+        return ['11', '12', '13', '21', '22', '3']
+        .includes(this.value[x][y]);
+    }
+
+    markCellAsShip(x, y) {
+        this.field[x-1][y-1] = 1;
+    }
+
+    isShelledShip(x, y) {
+        return ['110', '120', '130', '210', '220', '30']
+        .includes(this.value[x][y]);
+    }
+
+    markСellAsShelledShip(x, y) {
+        this.field[x-1][y-1] = -1;
+    }
+
+    isFiredCell(x, y) {
+        return this.value[x][y] === '6';
+    }
+
+    markCellAsFiredCell(x, y) {
+        this.field[x-1][y-1] = 2;
     }
 }
 
