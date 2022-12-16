@@ -257,16 +257,6 @@ class GameService {
         return this.state;
     }
 
-    createGameForTest(players) {
-        this.clearState();
-        this.setPlayers(players);
-        this.setConstFields();
-        this.setInitialCharacteristic();
-        this.setId();
-        this.save();
-        return this.state;
-    }
-
     clearState() {
         this.state = {
             gameId: '',
@@ -293,14 +283,6 @@ class GameService {
     
         this.state[firstPlayerTag].field = this.field.createRandomField();
         this.state[secondPlayerTag].field = this.field.createRandomField();
-    }
-
-    setConstFields() {
-        const firstPlayerTag = this.state.currentPlayer;
-        const secondPlayerTag = this.state.opponentPlayer;
-    
-        this.state[firstPlayerTag] = {field: this.field.getConstField()}
-        this.state[secondPlayerTag] = {field: this.field.getConstField()}
     }
 
     setInitialCharacteristic() {
