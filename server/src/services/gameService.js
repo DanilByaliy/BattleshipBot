@@ -234,8 +234,6 @@ class Field {
 }
 
 class GameService {
-    field = new Field();
-
     state = {
         gameId: '',
         currentPlayer: '',
@@ -244,7 +242,8 @@ class GameService {
         lastShotResult: null,
     };
 
-    constructor(db) {
+    constructor(field, db) {
+        this.field = field;
         this.db = db;
     }
 
@@ -488,7 +487,9 @@ class GameService {
     }
 }
 
+const field = new Field();
+
 module.exports = {
     GameService,
-    gameService: new GameService(gameDAO)
+    gameService: new GameService(field, gameDAO)
 };
