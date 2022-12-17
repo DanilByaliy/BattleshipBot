@@ -8,7 +8,7 @@ class Field {
         [0, 1], [1, 1], [1, 0], [1, -1], [0, -1]]
 
     createRandomField() {
-        this.setInitialField()
+        this.setInitialField();
         this.placeThreeDeskShip();
         this.placeTwoDeskShips();
         this.placeOneDeskShips();
@@ -185,10 +185,9 @@ class Field {
         this.field = this.createEmptyFieldSizeOf(7);
         for (let x = 1; x < 8; x++) {
             for (let y = 1; y < 8; y++) {
-                this.normalizeCell(x, y)
+                this.normalizeCell(x, y);
             }
         }
-        this.show();
         return this.field;
     }
 
@@ -279,8 +278,8 @@ class GameService {
         const firstPlayerTag = this.state.currentPlayer;
         const secondPlayerTag = this.state.opponentPlayer;
     
-        this.state[firstPlayerTag] = {}
-        this.state[firstPlayerTag] = {}
+        this.state[firstPlayerTag] = {};
+        this.state[firstPlayerTag] = {};
     
         this.state[firstPlayerTag].field = this.field.createRandomField();
         this.state[secondPlayerTag].field = this.field.createRandomField();
@@ -315,10 +314,9 @@ class GameService {
         if (this.checkIsGameOver()) throw new Error('Game Over');
         if (!this.checkIsCurrentPlayer(player)) throw new Error('Not your turn');
     
-        const opponent = this.state.opponentPlayer
+        const opponent = this.state.opponentPlayer;
     
         this.field.parse(this.state[opponent].field);
-        this.field.showRaw();
         const cellContent = this.field.getCellContent(cell);
         const shotStatus = this.getShotStatus(cellContent);
         this.state.lastShotStatus = shotStatus;
@@ -331,7 +329,7 @@ class GameService {
             this.updateGameCharacteristic(opponent, cellContent);
         } else this.changeCurrentPlayer();
     
-        if (this.checkIsOpponentHaveShips()) this.gameOver()
+        if (this.checkIsOpponentHaveShips()) this.gameOver();
         this.save();
     }
 
@@ -366,10 +364,8 @@ class GameService {
 
     hasShipSunk(typeOfShip) {
         const opponent = this.state.opponentPlayer;
-        if (typeOfShip === 'oneDeck') return true
-        const numberOfDeck = this.state[opponent].shipDecks[typeOfShip]
-        console.log(typeOfShip);
-        console.log('num of deck:' + numberOfDeck);
+        if (typeOfShip === 'oneDeck') return true;
+        const numberOfDeck = this.state[opponent].shipDecks[typeOfShip];
         return numberOfDeck === 1;
     }
 
@@ -440,7 +436,6 @@ class GameService {
     }
 
     async getLastMessage(gameId) {
-        console.log(gameId);
         await this.setStateFor(gameId);
         return this.state.lastMessage;
     }
