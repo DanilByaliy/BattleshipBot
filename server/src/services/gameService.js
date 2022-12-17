@@ -52,13 +52,13 @@ class Field {
         this.makeWrapOf('3', '7');
     }
 
-    placeThreeDeskShipHorisontallyFrom(row, col) {
+    placeThreeDeskShipVerticallyFrom(row, col) {
         for (let i = 0; i < 3; i++) {
             this.value[row + i][col] = '3';
         }
     }
     
-    placeThreeDeskShipVerticallyFrom(row, col) {
+    placeThreeDeskShipHorisontallyFrom(row, col) {
         for (let i = 0; i < 3; i++) {
             this.value[row][col + i] = '3';
         }
