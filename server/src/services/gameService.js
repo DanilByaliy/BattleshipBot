@@ -146,8 +146,9 @@ class Field {
     }
 
     parseCellToCoordinates(cell) {
-        const [xLetter, y] = cell.split('');
+        const [xLetter, yLetter] = cell.split('');
         const x = [null, 'a', 'b', 'c', 'd', 'e', 'f', 'g'].indexOf(xLetter);
+        const y = Number(yLetter);
         return {x, y};
     }
 
@@ -468,6 +469,7 @@ class GameService {
 const field = new Field();
 
 module.exports = {
+    Field,
     GameService,
     gameService: new GameService(field, gameDAO)
 };
