@@ -132,4 +132,37 @@ describe('Field class:', () => {
 
         expect(getNumberOfDeck(gameBoard)).toEqual(2);
     })
+
+    test('The createRandomField function should place ten deck on the field', () => {
+        const field = new Field();
+        field.setInitialField();
+
+        field.createRandomField();
+        const gameBoard = field.getField();
+
+        expect(getNumberOfDeck(gameBoard)).toEqual(10);
+    })
+
+    describe('- The updateField method:', () => {
+        test('should update Field after shelling the ship', () => {
+            const field = new Field();
+            field.setInitialField();
+            field.placeThreeDeskShipHorisontallyFrom(2, 3);
+            
+            field.updateField('b3', 'shelled');
+            const contentOfCellB3 = field.getCellContent('b3');
+            const gameBoard = field.getField();
+    
+            expect(contentOfCellB3).toEqual('noShip');
+            expect(gameBoard).toEqual([
+                [0, 0, 0, 0, 0, 0, 0],
+                [0, 0, -1, 1, 1, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0],
+            ]);
+        })
+    })
 })
