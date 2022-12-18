@@ -2,6 +2,16 @@
 
 const { Field } = require('../src/services/gameService');
 
+const getNumberOfDeck = (gameBoard) => {
+    let numberOfDeck = 0;
+    for (let row of gameBoard) {
+        for (let cell of row) {
+            if (cell === 1) numberOfDeck++;
+        }
+    }
+    return numberOfDeck;
+}
+
 describe('Field class:', () => {
     test('The createEmptyFieldSizeOf function should create an empty field of the given size', () => {
         const field = new Field();
@@ -101,5 +111,25 @@ describe('Field class:', () => {
             [0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0],
         ]);
+    })
+
+    test('The placeOneDeskShip function should place one deck on the field', () => {
+        const field = new Field();
+        field.setInitialField();
+
+        field.placeOneDeskShip();
+        const gameBoard = field.getField();
+
+        expect(getNumberOfDeck(gameBoard)).toEqual(1);
+    })
+
+    test('The placeTwoDeskShip function should place two deck on the field', () => {
+        const field = new Field();
+        field.setInitialField();
+
+        field.placeTwoDeskShip();
+        const gameBoard = field.getField();
+
+        expect(getNumberOfDeck(gameBoard)).toEqual(2);
     })
 })

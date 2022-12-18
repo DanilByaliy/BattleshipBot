@@ -77,7 +77,7 @@ class Field {
     }
 
 
-    placeTwoDeskShip(n) {
+    placeTwoDeskShip(n = 1) {
         let row2, col2, row22, col22;
         const random = Math.random() > 0.5;
       
@@ -96,7 +96,7 @@ class Field {
         this.makeWrapOf(`2${n + 1}`, '7');
     }
     
-    placeOneDeskShip(n) {
+    placeOneDeskShip(n = 1) {
         let row, col = 0;
     
         do {
@@ -382,8 +382,7 @@ class GameService {
         return numberOfDeck === 1;
     }
 
-    updateField() {
-        const cell = this.cell;
+    updateField(cell) {
         const shotStatus = this.state.lastShotStatus;
         this.field.updateField(cell, shotStatus);
         this.state[this.state.opponentPlayer].field = this.field.getRawField();
