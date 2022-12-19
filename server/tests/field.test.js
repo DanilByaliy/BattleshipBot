@@ -232,5 +232,83 @@ describe('Field class:', () => {
                 [0, 0, 0, 0, 0, 0, 0],
             ]);
         })
+
+        test('should update the field after the three-deck ship sinks', () => {
+            const field = new Field();
+            field.setInitialField();
+            field.placeThreeDeskShipHorisontallyFrom(2, 3);
+
+            field.updateField('b3', 'shelled');
+            field.updateField('b4', 'shelled');
+            field.updateField('b5', 'sunk');
+            const contentOfCellB3 = field.getCellContent('b3');
+            const contentOfCellB4 = field.getCellContent('b4');
+            const contentOfCellB5 = field.getCellContent('b5');
+            const gameBoard = field.getField();
+
+            expect(contentOfCellB3).toEqual('noShip');
+            expect(contentOfCellB4).toEqual('noShip');
+            expect(contentOfCellB5).toEqual('noShip');
+            expect(gameBoard).toEqual([
+                [0, 2,  2,  2,  2,  2, 0],
+                [0, 2, -1, -1, -1,  2, 0],
+                [0, 2,  2,  2,  2,  2, 0],
+                [0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0],
+            ]);
+        })
+
+        test('should update the field after the single-deck ships sink', () => {
+            const field = new Field();
+            field.setInitialField();
+            field.set(testField);
+            
+            field.updateField('a1', 'sunk');
+            field.updateField('b3', 'sunk');
+            field.updateField('g2', 'sunk');
+            const contentOfCellA1 = field.getCellContent('a1');
+            const contentOfCellB3 = field.getCellContent('b3');
+            const contentOfCellG2 = field.getCellContent('g2');
+            const gameBoard = field.getField();
+    
+            expect(contentOfCellA1).toEqual('noShip');
+            expect(contentOfCellB3).toEqual('noShip');
+            expect(contentOfCellG2).toEqual('noShip');
+            expect(gameBoard).toEqual([
+                [-1,  2,  2, 2, 0, 0, 1],
+                [ 2,  2, -1, 2, 0, 0, 1],
+                [ 0,  2,  2, 2, 0, 0, 0],
+                [ 0,  0,  0, 0, 0, 0, 0],
+                [ 0,  0,  0, 0, 0, 0, 0],
+                [ 2,  2,  2, 0, 1, 1, 0],
+                [ 2, -1,  2, 0, 0, 0, 0],
+            ]);
+        })
+
+        test('should update the field after the double-decker ship sinks', () => {
+            const field = new Field();
+            field.setInitialField();
+            field.set(testField);
+            
+            field.updateField('f5', 'shelled');
+            field.updateField('f6', 'sunk');
+            const contentOfCellF5 = field.getCellContent('f5');
+            const contentOfCellF6 = field.getCellContent('f6');
+            const gameBoard = field.getField();
+    
+            expect(contentOfCellF5).toEqual('noShip');
+            expect(contentOfCellF6).toEqual('noShip');
+            expect(gameBoard).toEqual([
+                [1, 0, 0, 0,  0,  0, 1],
+                [0, 0, 1, 0,  0,  0, 1],
+                [0, 0, 0, 0,  0,  0, 0],
+                [0, 0, 0, 0,  0,  0, 0],
+                [0, 0, 0, 2,  2,  2, 2],
+                [0, 0, 0, 2, -1, -1, 2],
+                [0, 1, 0, 2,  2,  2, 2],
+            ]);
+        })
     })
 })
