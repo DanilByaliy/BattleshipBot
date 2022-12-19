@@ -175,6 +175,7 @@ class Field {
     }
 
     set(field) {
+        this.setInitialField();
         for (let x = 0; x < 9; x++) {
             for (let y = 0; y < 9; y++) {
                 this.value[x][y] = field[x][y];
@@ -260,7 +261,7 @@ class GameService {
         this.setInitialCharacteristic();
         this.setId();
         this.save();
-        return this.getGameInfo();
+        return this.getCurrentGameInfo();
     }
 
     clearState() {
@@ -285,7 +286,7 @@ class GameService {
         const secondPlayerTag = this.state.opponentPlayer;
     
         this.state[firstPlayerTag] = {};
-        this.state[firstPlayerTag] = {};
+        this.state[secondPlayerTag] = {};
     
         this.state[firstPlayerTag].field = this.field.createRandomField();
         this.state[secondPlayerTag].field = this.field.createRandomField();
@@ -465,8 +466,10 @@ class GameService {
         return {
             currentPlayer: currentPlayer,
             opponentPlayer: opponentPlayer,
-            [currentPlayer]: currentPlayerField,
-            [opponentPlayer]: opponentPlayerField
+            boards: {
+                [currentPlayer]: currentPlayerField,
+                [opponentPlayer]: opponentPlayerField
+            }   
         }
     }
 
