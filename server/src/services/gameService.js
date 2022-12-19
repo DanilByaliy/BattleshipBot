@@ -175,7 +175,11 @@ class Field {
     }
 
     set(field) {
-        this.value = field;
+        for (let x = 0; x < 9; x++) {
+            for (let y = 0; y < 9; y++) {
+                this.value[x][y] = field[x][y];
+            }
+        }
     }
 
     getRawField() {

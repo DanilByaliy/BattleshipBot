@@ -12,6 +12,19 @@ const getNumberOfDeck = (gameBoard) => {
     return numberOfDeck;
 }
 
+const testField = [
+    //   1   2   3   4   5   6   7
+    [9,  9,  9,  9,  9,  9,  9,  9,  9],
+    [9,'11', 0,  0,  0,  0,  0,'21', 9], // a
+    [9,  0,  0,'12', 0,  0,  0,'21', 9], // b
+    [9,  0,  0,  0,  0,  0,  0,  0,  9], // c
+    [9,  0,  0,  0,  0,  0,  0,  0,  9], // d
+    [9,  0,  0,  0,  0,  0,  0,  0,  9], // e
+    [9,  0,  0,  0,  0,'22','22',0,  9], // f
+    [9,  0,'13', 0,  0,  0,  0,  0,  9], // g
+    [9,  9,  9,  9,  9,  9,  9,  9,  9],
+]
+
 describe('Field class:', () => {
     test('The createEmptyFieldSizeOf function should create an empty field of the given size', () => {
         const field = new Field();
@@ -143,8 +156,63 @@ describe('Field class:', () => {
         expect(getNumberOfDeck(gameBoard)).toEqual(10);
     })
 
+    test('The getCellContent function should return type of ship', () => {
+        const field = new Field();
+        field.setInitialField();
+        field.set(testField);
+
+        const contentOfCellA1 = field.getCellContent('a1');
+        const contentOfCellB3 = field.getCellContent('b3');
+        const contentOfCellG2 = field.getCellContent('g2');
+        const contentOfCellA7 = field.getCellContent('a7');
+        const contentOfCellB7 = field.getCellContent('b7');
+        const contentOfCellF5 = field.getCellContent('f5');
+        const contentOfCellF6 = field.getCellContent('f6');
+
+
+        const gameBoard = field.getField();
+        expect(contentOfCellA1).toEqual('oneDeck');
+        expect(contentOfCellB3).toEqual('oneDeck');
+        expect(contentOfCellG2).toEqual('oneDeck');
+        expect(contentOfCellA7).toEqual('firstTwoDeck');
+        expect(contentOfCellB7).toEqual('firstTwoDeck');
+        expect(contentOfCellF5).toEqual('secondTwoDeck');
+        expect(contentOfCellF6).toEqual('secondTwoDeck');
+        expect(gameBoard).toEqual([
+            [1, 0, 0, 0, 0, 0, 1],
+            [0, 0, 1, 0, 0, 0, 1],
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 1, 1, 0],
+            [0, 1, 0, 0, 0, 0, 0],
+        ]);
+    })
+
     describe('- The updateField method:', () => {
-        test('should update Field after shelling the ship', () => {
+        test('should update the field after a failed shot', () => {
+            const field = new Field();
+            field.setInitialField();
+
+            field.updateField('a1', 'past');
+            field.updateField('b3', 'past');
+            field.updateField('c7', 'past');
+            field.updateField('d4', 'past');
+            field.updateField('g6', 'past');
+            const gameBoard = field.getField();
+
+            expect(gameBoard).toEqual([
+                [2, 0, 0, 0, 0, 0, 0],
+                [0, 0, 2, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 2],
+                [0, 0, 0, 2, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 2, 0],
+            ]);
+        })
+
+        test('should update field after shelling the three-deck ship', () => {
             const field = new Field();
             field.setInitialField();
             field.placeThreeDeskShipHorisontallyFrom(2, 3);
