@@ -244,7 +244,8 @@ class GameService {
         currentPlayer: '',
         opponentPlayer: '',
         gameOver: false,
-        lastShotResult: null,
+        lastMessage: '',
+        lastShotStatus: null,
     };
 
     constructor(field, db) {
@@ -259,7 +260,7 @@ class GameService {
         this.setInitialCharacteristic();
         this.setId();
         this.save();
-        return this.state;
+        return this.getGameInfo();
     }
 
     clearState() {
@@ -323,6 +324,7 @@ class GameService {
         this.setFieldForOpponentPlayer();
         this.setCellContent(cell);
         this.setShotStatusByCell();
+        this.setMessageByShotStatus();
         this.updateField(cell);
        
         if (this.isUnsuccessfulShot()) this.changeCurrentPlayer();
@@ -331,7 +333,7 @@ class GameService {
         if (this.checkIsOpponentHaveShips()) this.gameOver();
 
         await this.save();
-        return getResponseObject()
+        return this.getGameInfoAfterShot();
     }
 
     async setStateFor(id) {
@@ -386,6 +388,12 @@ class GameService {
         return numberOfDeck === 1;
     }
 
+    setMessageByShotStatus() {
+        const shotStatus = this.state.lastShotStatus;
+        const message = this.getMessageByStatus(shotStatus);
+        this.state.lastMessage = message;
+    }
+
     updateField(cell) {
         const shotStatus = this.state.lastShotStatus;
         this.field.updateField(cell, shotStatus);
@@ -430,13 +438,23 @@ class GameService {
         this.state.gameOver = true;
     }
 
-    getGameboardsFor(gameId) {
-        this.setStateFor(gameId);
+    getGameInfoAfterShot() {
+        const gameInfo = this.getCurrentGameInfo();
+        const shotStaus = this.state.lastShotStatus;
+        const message = this.state.lastMessage;
+        return {
+            ...gameInfo,
+            shotStaus: shotStaus,
+            message: message,
+        }
+    }
+
+    getCurrentGameInfo() {
         const currentPlayer = this.state.currentPlayer;
         const opponentPlayer = this.state.opponentPlayer;
     
-        const currentPlayerRawField = this.state[this.state.currentPlayer].field;
-        const opponentPlayerRawField = this.state[this.state.opponentPlayer].field;
+        const currentPlayerRawField = this.state[currentPlayer].field;
+        const opponentPlayerRawField = this.state[opponentPlayer].field;
     
         this.field.set(currentPlayerRawField);
         const currentPlayerField = this.field.getField();
@@ -445,6 +463,8 @@ class GameService {
         const opponentPlayerField = this.field.getField();
     
         return {
+            currentPlayer: currentPlayer,
+            opponentPlayer: opponentPlayer,
             [currentPlayer]: currentPlayerField,
             [opponentPlayer]: opponentPlayerField
         }
