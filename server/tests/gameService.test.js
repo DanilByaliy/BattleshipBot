@@ -84,5 +84,29 @@ describe('GameService class:', () => {
 
             expect(async () => await testGameService.shot('@first@second', '@first', 'a1')).rejects.toThrow('Not your turn')
         })
+
+        test('should return information about the shelling of the three-deck ship when it happened', async () => {
+            jest.spyOn(mockField, "getCellContent").mockImplementation((_) => 'threeDeck');
+
+            const shotResult = await testGameService.shot('@first@second', '@first', 'a1');
+            const { shotStatus, message, currentPlayer, opponentPlayer } = shotResult;
+
+            expect(shotStatus).toBe('shelled');
+            expect(message).toBe('The ship is shelled');
+            expect(currentPlayer).toBe('@first');
+            expect(opponentPlayer).toBe('@second');
+        })
+
+        test('should return information about the shelling of the two-deck ship when it happened', async () => {
+            jest.spyOn(mockField, "getCellContent").mockImplementation((_) => 'firstTwoDeck');
+
+            const shotResult = await testGameService.shot('@first@second', '@first', 'a1');
+            const { shotStatus, message, currentPlayer, opponentPlayer } = shotResult;
+
+            expect(shotStatus).toBe('shelled');
+            expect(message).toBe('The ship is shelled');
+            expect(currentPlayer).toBe('@first');
+            expect(opponentPlayer).toBe('@second');
+        })
     })
 });
