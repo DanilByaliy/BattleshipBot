@@ -108,5 +108,44 @@ describe('GameService class:', () => {
             expect(currentPlayer).toBe('@first');
             expect(opponentPlayer).toBe('@second');
         })
+
+        test('should return information about the sinking of a one-deck ship when it happened', async () => {
+            jest.spyOn(mockField, "getCellContent").mockImplementation((_) => 'oneDeck');
+
+            const shotResult = await testGameService.shot(testGameId, '@first', 'a1');
+
+            const { shotStatus, message, currentPlayer, opponentPlayer } = shotResult;
+            expect(shotStatus).toBe('sunk');
+            expect(message).toBe('The ship is sunk');
+            expect(currentPlayer).toBe('@first');
+            expect(opponentPlayer).toBe('@second');
+        })
+
+        test('should return information about the sinking of a two-deck ship when it happened', async () => {
+            jest.spyOn(mockField, "getCellContent").mockImplementation((_) => 'firstTwoDeck');
+
+            await testGameService.shot('@first@second', '@first', 'a1');
+            const shotResult = await testGameService.shot('@first@second', '@first', 'a2');
+
+            const { shotStatus, message, currentPlayer, opponentPlayer } = shotResult;
+            expect(shotStatus).toBe('sunk');
+            expect(message).toBe('The ship is sunk');
+            expect(currentPlayer).toBe('@first');
+            expect(opponentPlayer).toBe('@second');
+        })
+
+        test('should return information about the sinking of a three-deck ship when it happened', async () => {
+            jest.spyOn(mockField, "getCellContent").mockImplementation((_) => 'threeDeck');
+
+            await testGameService.shot('@first@second', '@first', 'a1');
+            await testGameService.shot('@first@second', '@first', 'a2');
+            const shotResult = await testGameService.shot('@first@second', '@first', 'a3');
+
+            const { shotStatus, message, currentPlayer, opponentPlayer } = shotResult;
+            expect(shotStatus).toBe('sunk');
+            expect(message).toBe('The ship is sunk');
+            expect(currentPlayer).toBe('@first');
+            expect(opponentPlayer).toBe('@second');
+        })
     })
 });
