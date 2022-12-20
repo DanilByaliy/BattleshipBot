@@ -76,12 +76,12 @@ describe('Field class:', () => {
         expect(coordinateG7).toEqual({x: 7, y: 7});
     })
 
-    test(`The placeThreeDeskShipHorizontallyFrom function should place a ship 
+    test(`The placeThreeDeckShipHorizontallyFrom function should place a ship 
             with three decks horizontally from the specified coordinate`, () => {
         const field = new Field();
         field.setInitialField();
 
-        field.placeThreeDeskShipHorisontallyFrom(2, 3);
+        field.placeThreeDeckShipHorisontallyFrom(2, 3);
         const contentOfCellB3 = field.getCellContent('b3');
         const contentOfCellB4 = field.getCellContent('b4');
         const contentOfCellB5 = field.getCellContent('b5');
@@ -101,12 +101,12 @@ describe('Field class:', () => {
         ]);
     })
 
-    test(`The placeThreeDeskShipVerticallyFrom function should place a ship 
+    test(`The placeThreeDeckShipVerticallyFrom function should place a ship 
             with three decks vertically from the specified coordinate`, () => {
         const field = new Field();
 
         field.setInitialField();
-        field.placeThreeDeskShipVerticallyFrom(2, 3);
+        field.placeThreeDeckShipVerticallyFrom(2, 3);
         const contentOfCellB3 = field.getCellContent('b3');
         const contentOfCellC3 = field.getCellContent('c3');
         const contentOfCellD3 = field.getCellContent('d3');
@@ -126,21 +126,21 @@ describe('Field class:', () => {
         ]);
     })
 
-    test('The placeOneDeskShip function should place one deck on the field', () => {
+    test('The placeOneDeckShip function should place one deck on the field', () => {
         const field = new Field();
         field.setInitialField();
 
-        field.placeOneDeskShip();
+        field.placeOneDeckShip();
         const gameBoard = field.getField();
 
         expect(getNumberOfDeck(gameBoard)).toEqual(1);
     })
 
-    test('The placeTwoDeskShip function should place two deck on the field', () => {
+    test('The placeTwoDeckShip function should place two deck on the field', () => {
         const field = new Field();
         field.setInitialField();
 
-        field.placeTwoDeskShip();
+        field.placeTwoDeckShip();
         const gameBoard = field.getField();
 
         expect(getNumberOfDeck(gameBoard)).toEqual(2);
@@ -215,7 +215,7 @@ describe('Field class:', () => {
         test('should update field after shelling the three-deck ship', () => {
             const field = new Field();
             field.setInitialField();
-            field.placeThreeDeskShipHorisontallyFrom(2, 3);
+            field.placeThreeDeckShipHorisontallyFrom(2, 3);
             
             field.updateField('b3', 'shelled');
             const contentOfCellB3 = field.getCellContent('b3');
@@ -236,7 +236,7 @@ describe('Field class:', () => {
         test('should update the field after the three-deck ship sinks', () => {
             const field = new Field();
             field.setInitialField();
-            field.placeThreeDeskShipHorisontallyFrom(2, 3);
+            field.placeThreeDeckShipHorisontallyFrom(2, 3);
 
             field.updateField('b3', 'shelled');
             field.updateField('b4', 'shelled');

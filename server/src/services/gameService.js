@@ -9,9 +9,9 @@ class Field {
 
     createRandomField() {
         this.setInitialField();
-        this.placeThreeDeskShip();
-        this.placeTwoDeskShips();
-        this.placeOneDeskShips();
+        this.placeThreeDeckShip();
+        this.placeTwoDeckShips();
+        this.placeOneDeckShips();
         this.createEnvelope();
         return this.value;
     }
@@ -41,43 +41,43 @@ class Field {
         }
     }
 
-    placeThreeDeskShip() {
+    placeThreeDeckShip() {
         const row = Math.round(Math.random() * 4) + 1;
         const col = Math.round(Math.random() * 4) + 1;
         const random = Math.random() > 0.5;
     
-        if (random) this.placeThreeDeskShipVerticallyFrom(row, col);
-        else this.placeThreeDeskShipHorisontallyFrom(row, col);
+        if (random) this.placeThreeDeckShipVerticallyFrom(row, col);
+        else this.placeThreeDeckShipHorisontallyFrom(row, col);
 
         this.makeWrapOf('3', '7');
     }
 
-    placeThreeDeskShipVerticallyFrom(row, col) {
+    placeThreeDeckShipVerticallyFrom(row, col) {
         for (let i = 0; i < 3; i++) {
             this.value[row + i][col] = '3';
         }
     }
     
-    placeThreeDeskShipHorisontallyFrom(row, col) {
+    placeThreeDeckShipHorisontallyFrom(row, col) {
         for (let i = 0; i < 3; i++) {
             this.value[row][col + i] = '3';
         }
     }
 
-    placeTwoDeskShips() {
+    placeTwoDeckShips() {
         for (let i = 0; i < 2; i++) {
-            this.placeTwoDeskShip(i);
+            this.placeTwoDeckShip(i);
         }
     }
 
-    placeOneDeskShips() {
+    placeOneDeckShips() {
         for (let i = 0; i < 3; i++) {
-            this.placeOneDeskShip(i);
+            this.placeOneDeckShip(i);
         }
     }
 
 
-    placeTwoDeskShip(n = 1) {
+    placeTwoDeckShip(n = 1) {
         let row2, col2, row22, col22;
         const random = Math.random() > 0.5;
       
@@ -96,7 +96,7 @@ class Field {
         this.makeWrapOf(`2${n + 1}`, '7');
     }
     
-    placeOneDeskShip(n = 1) {
+    placeOneDeckShip(n = 1) {
         let row, col = 0;
     
         do {
@@ -293,14 +293,14 @@ class GameService {
     }
 
     setInitialCharacteristic() {
-        this.state[this.state.currentPlayer].shipDesks = {
+        this.state[this.state.currentPlayer].shipDecks = {
             all: 10,
             threeDeck: 3,
             firstTwoDeck: 2,
             secondTwoDeck: 2,
         };
         
-        this.state[this.state.opponentPlayer].shipDesks = {
+        this.state[this.state.opponentPlayer].shipDecks = {
             all: 10,
             threeDeck: 3,
             firstTwoDeck: 2,
@@ -394,7 +394,8 @@ class GameService {
         this.state[this.state.opponentPlayer].field = this.field.getRawField();
     }
 
-    getMessageByStatus(status) {
+    getMessageByStatus() {
+        const status = this.state.lastShotStatus;
         switch (status) {
             case 'sunk':
                 return 'The ship is sunk';
@@ -410,7 +411,8 @@ class GameService {
         return shotStatus === 'past';
     }
 
-    updateGameCharacteristic(ship) {
+    updateGameCharacteristic() {
+        const ship = this.cellContent;
         const player = this.state.opponentPlayer;
         this.state[player].shipDecks[ship] -= 1;
         this.state[player].shipDecks.all -= 1;
@@ -434,11 +436,11 @@ class GameService {
 
     getGameInfoAfterShot() {
         const gameInfo = this.getCurrentGameInfo();
-        const shotStaus = this.state.lastShotStatus;
+        const shotStatus = this.state.lastShotStatus;
         const message = this.getMessageByStatus();
         return {
             ...gameInfo,
-            shotStaus: shotStaus,
+            shotStatus: shotStatus,
             message: message,
         }
     }
