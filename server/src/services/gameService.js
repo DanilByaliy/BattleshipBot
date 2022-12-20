@@ -325,7 +325,6 @@ class GameService {
         this.setFieldForOpponentPlayer();
         this.setCellContent(cell);
         this.setShotStatusByCell();
-        this.setMessageByShotStatus();
         this.updateField(cell);
        
         if (this.isUnsuccessfulShot()) this.changeCurrentPlayer();
@@ -389,12 +388,6 @@ class GameService {
         return numberOfDeck === 1;
     }
 
-    setMessageByShotStatus() {
-        const shotStatus = this.state.lastShotStatus;
-        const message = this.getMessageByStatus(shotStatus);
-        this.state.lastMessage = message;
-    }
-
     updateField(cell) {
         const shotStatus = this.state.lastShotStatus;
         this.field.updateField(cell, shotStatus);
@@ -442,7 +435,7 @@ class GameService {
     getGameInfoAfterShot() {
         const gameInfo = this.getCurrentGameInfo();
         const shotStaus = this.state.lastShotStatus;
-        const message = this.state.lastMessage;
+        const message = this.getMessageByStatus();
         return {
             ...gameInfo,
             shotStaus: shotStaus,
