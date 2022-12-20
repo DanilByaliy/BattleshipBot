@@ -14,43 +14,45 @@ const testField = [
     [9,  9,   9,   9,   9,   9,   9,   9,  9]
 ];
 
-const mockField = new Field();
-jest.spyOn(mockField, "createRandomField").mockImplementation(() => testField);
-
-
 class DB {
-    save() {}
-    get() {}
+    storage = new Map()
+    save(state) {
+        this.storage.set(state.gameId, state);
+    }
+    
+    async get(gameId) {
+        return await this.storage.get(gameId);
+    }
+    
+    delete(gameId) {
+        return this.storage.delete(gameId);
+    }
 }
 
-const testGameService = new GameService(mockField, new DB());
-const testPlayers = {firstPlayerTag: '@first', secondPlayerTag: '@second'};
+let testGameService;
+const mockField = new Field();
+const testPlayers = { firstPlayerTag: '@first', secondPlayerTag: '@second' };
+
+jest.spyOn(mockField, "createRandomField").mockImplementation(() => {});
+jest.spyOn(mockField, "set").mockImplementation(() => {});
+jest.spyOn(mockField, "getCellContent").mockImplementation(() => {});
+jest.spyOn(mockField, "updateField").mockImplementation(() => {});
+jest.spyOn(mockField, "getRawField").mockImplementation(() => {});
+jest.spyOn(mockField, "getField").mockImplementation(() => {});
+
 
 describe('GameService class:', () => {
     describe('- The createGameFor method:', () => {
+
+        beforeEach(() => {
+            testGameService = new GameService(mockField, new DB());
+        })
+
         test('should create new game for two players and return boards', async () => {
             const { boards, currentPlayer, opponentPlayer } = testGameService.createGameFor(testPlayers);
             
             expect(currentPlayer).toBe('@first');
             expect(opponentPlayer).toBe('@second');
-            expect(boards['@first']).toEqual([
-                [0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 1, 1, 1, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 1, 0, 1, 0],
-                [0, 0, 0, 1, 0, 0, 0],
-                [0, 1, 0, 0, 0, 1, 1],
-                [0, 0, 0, 1, 0, 0, 0]
-            ])
-            expect(boards['@second']).toEqual([
-                [0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 1, 1, 1, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 1, 0, 1, 0],
-                [0, 0, 0, 1, 0, 0, 0],
-                [0, 1, 0, 0, 0, 1, 1],
-                [0, 0, 0, 1, 0, 0, 0]
-            ])
         })
     })
 });
