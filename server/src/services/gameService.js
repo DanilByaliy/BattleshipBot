@@ -446,6 +446,7 @@ class GameService {
     }
 
     getCurrentGameInfo() {
+        const gameId = this.state.gameId;
         const currentPlayer = this.state.currentPlayer;
         const opponentPlayer = this.state.opponentPlayer;
     
@@ -459,6 +460,7 @@ class GameService {
         const opponentPlayerField = this.field.getField();
     
         return {
+            gameId: gameId,
             currentPlayer: currentPlayer,
             opponentPlayer: opponentPlayer,
             boards: {

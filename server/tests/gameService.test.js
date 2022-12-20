@@ -32,6 +32,7 @@ class DB {
 let testGameService;
 const mockField = new Field();
 const testPlayers = { firstPlayerTag: '@first', secondPlayerTag: '@second' };
+let testGameId;
 
 jest.spyOn(mockField, "createRandomField").mockImplementation(() => {});
 jest.spyOn(mockField, "set").mockImplementation(() => {});
@@ -53,6 +54,35 @@ describe('GameService class:', () => {
             
             expect(currentPlayer).toBe('@first');
             expect(opponentPlayer).toBe('@second');
+        })
+    })
+
+    describe('- The shot method:', () => {
+
+        beforeEach(() => {
+            testGameService = new GameService(mockField, new DB());
+            const { gameId } = testGameService.createGameFor(testPlayers);
+            testGameId = gameId;
+        })
+
+        test('should return info about failed shot', async () => {
+            jest.spyOn(mockField, "getCellContent").mockImplementation((_) => 'noShip');
+
+            const shotResult = await testGameService.shot('@first@second', '@first', 'a1');
+            const { shotStatus, message, currentPlayer, opponentPlayer } = shotResult;
+
+            expect(shotStatus).toBe('past');
+            expect(message).toBe(`You didn't hit the enemy ship`);
+            expect(currentPlayer).toBe('@second');
+            expect(opponentPlayer).toBe('@first');
+        })
+
+        test(`should return an error if a player tries to roll when it's not their turn`, async () => {
+            jest.spyOn(mockField, "getCellContent").mockImplementation((_) => 'noShip');
+
+            await testGameService.shot('@first@second', '@first', 'a1');
+
+            expect(async () => await testGameService.shot('@first@second', '@first', 'a1')).rejects.toThrow('Not your turn')
         })
     })
 });
