@@ -478,36 +478,6 @@ class GameService {
         return message;
     }
 
-    getCurrentPlayer(gameId) {
-        this.setStateFor(gameId);
-        return this.state.currentPlayer;
-    }
-
-    async getLastMessage(gameId) {
-        await this.setStateFor(gameId);
-        return this.state.lastMessage;
-    }
-
-    getGameboardsFor(gameId) {
-        this.setStateFor(gameId);
-        const currentPlayer = this.state.currentPlayer;
-        const opponentPlayer = this.state.opponentPlayer;
-    
-        const currentPlayerRawField = this.state[currentPlayer].field;
-        const opponentPlayerRawField = this.state[opponentPlayer].field;
-    
-        this.field.set(currentPlayerRawField);
-        const currentPlayerField = this.field.getField();
-    
-        this.field.set(opponentPlayerRawField);
-        const opponentPlayerField = this.field.getField();
-    
-        return {
-            [currentPlayer]: currentPlayerField,
-            [opponentPlayer]: opponentPlayerField
-        }
-    }
-
     async deleteGameById(id) {
         await this.db.delete(id);
     }
