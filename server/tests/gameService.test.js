@@ -153,5 +153,36 @@ describe('GameService class:', () => {
             expect(currentPlayer).toBe('@first');
             expect(opponentPlayer).toBe('@second');
         })
+
+        test('should return game completion information when it happened', async () => {
+            jest.spyOn(mockField, "getCellContent").mockImplementation((_) => 'threeDeck');
+            await testGameService.shot('@first@second', '@first', 'a1');
+            await testGameService.shot('@first@second', '@first', 'a2');
+            await testGameService.shot('@first@second', '@first', 'a3');
+    
+            jest.spyOn(mockField, "getCellContent").mockImplementation((_) => 'firstTwoDeck');
+            await testGameService.shot('@first@second', '@first', 'c1');
+            await testGameService.shot('@first@second', '@first', 'c2');
+    
+            jest.spyOn(mockField, "getCellContent").mockImplementation((_) => 'secondTwoDeck');
+            await testGameService.shot('@first@second', '@first', 'e1');
+            await testGameService.shot('@first@second', '@first', 'e2');
+    
+            jest.spyOn(mockField, "getCellContent").mockImplementation((_) => 'oneDeck');
+            await testGameService.shot('@first@second', '@first', 'g1');
+            await testGameService.shot('@first@second', '@first', 'g3');
+    
+    
+            const shotResult = await testGameService.shot(testGameId, '@first', 'g5');
+    
+
+            const { shotStatus, message, isGameOver, currentPlayer, opponentPlayer } = shotResult;
+            expect(shotStatus).toBe('sunk');
+            expect(message).toBe('The ship is sunk. Game over. You won!');
+            expect(isGameOver).toBe(true);
+            expect(currentPlayer).toBe('@first');
+            expect(opponentPlayer).toBe('@second');
+            expect(async () => await testGameService.shot('@first@second', '@first', 'g7')).rejects.toThrow('Game Over');
+        })
     })
 });
