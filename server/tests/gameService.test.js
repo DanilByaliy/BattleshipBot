@@ -69,10 +69,11 @@ describe('GameService class:', () => {
             jest.spyOn(mockField, "getCellContent").mockImplementation((_) => 'noShip');
 
             const shotResult = await testGameService.shot('@first@second', '@first', 'a1');
-            const { shotStatus, message, currentPlayer, opponentPlayer } = shotResult;
+            const { shotStatus, message, isGameOver, currentPlayer, opponentPlayer } = shotResult;
 
             expect(shotStatus).toBe('past');
             expect(message).toBe(`You didn't hit the enemy ship`);
+            expect(isGameOver).toBe(false);
             expect(currentPlayer).toBe('@second');
             expect(opponentPlayer).toBe('@first');
         })
@@ -89,10 +90,11 @@ describe('GameService class:', () => {
             jest.spyOn(mockField, "getCellContent").mockImplementation((_) => 'threeDeck');
 
             const shotResult = await testGameService.shot('@first@second', '@first', 'a1');
-            const { shotStatus, message, currentPlayer, opponentPlayer } = shotResult;
+            const { shotStatus, message, isGameOver, currentPlayer, opponentPlayer } = shotResult;
 
             expect(shotStatus).toBe('shelled');
             expect(message).toBe('The ship is shelled');
+            expect(isGameOver).toBe(false);
             expect(currentPlayer).toBe('@first');
             expect(opponentPlayer).toBe('@second');
         })
@@ -101,10 +103,11 @@ describe('GameService class:', () => {
             jest.spyOn(mockField, "getCellContent").mockImplementation((_) => 'firstTwoDeck');
 
             const shotResult = await testGameService.shot('@first@second', '@first', 'a1');
-            const { shotStatus, message, currentPlayer, opponentPlayer } = shotResult;
+            const { shotStatus, message, isGameOver, currentPlayer, opponentPlayer } = shotResult;
 
             expect(shotStatus).toBe('shelled');
             expect(message).toBe('The ship is shelled');
+            expect(isGameOver).toBe(false);
             expect(currentPlayer).toBe('@first');
             expect(opponentPlayer).toBe('@second');
         })
@@ -114,9 +117,10 @@ describe('GameService class:', () => {
 
             const shotResult = await testGameService.shot(testGameId, '@first', 'a1');
 
-            const { shotStatus, message, currentPlayer, opponentPlayer } = shotResult;
+            const { shotStatus, message, isGameOver, currentPlayer, opponentPlayer } = shotResult;
             expect(shotStatus).toBe('sunk');
             expect(message).toBe('The ship is sunk');
+            expect(isGameOver).toBe(false);
             expect(currentPlayer).toBe('@first');
             expect(opponentPlayer).toBe('@second');
         })
@@ -127,9 +131,10 @@ describe('GameService class:', () => {
             await testGameService.shot('@first@second', '@first', 'a1');
             const shotResult = await testGameService.shot('@first@second', '@first', 'a2');
 
-            const { shotStatus, message, currentPlayer, opponentPlayer } = shotResult;
+            const { shotStatus, message, isGameOver, currentPlayer, opponentPlayer } = shotResult;
             expect(shotStatus).toBe('sunk');
             expect(message).toBe('The ship is sunk');
+            expect(isGameOver).toBe(false);
             expect(currentPlayer).toBe('@first');
             expect(opponentPlayer).toBe('@second');
         })
@@ -141,9 +146,10 @@ describe('GameService class:', () => {
             await testGameService.shot('@first@second', '@first', 'a2');
             const shotResult = await testGameService.shot('@first@second', '@first', 'a3');
 
-            const { shotStatus, message, currentPlayer, opponentPlayer } = shotResult;
+            const { shotStatus, message, isGameOver, currentPlayer, opponentPlayer } = shotResult;
             expect(shotStatus).toBe('sunk');
             expect(message).toBe('The ship is sunk');
+            expect(isGameOver).toBe(false);
             expect(currentPlayer).toBe('@first');
             expect(opponentPlayer).toBe('@second');
         })

@@ -394,18 +394,6 @@ class GameService {
         this.state[this.state.opponentPlayer].field = this.field.getRawField();
     }
 
-    getMessageByStatus() {
-        const status = this.state.lastShotStatus;
-        switch (status) {
-            case 'sunk':
-                return 'The ship is sunk';
-            case 'shelled':
-                return 'The ship is shelled';
-            case 'past':
-                return `You didn't hit the enemy ship`;
-        }
-    }
-
     isUnsuccessfulShot() {
         const shotStatus = this.state.lastShotStatus;
         return shotStatus === 'past';
@@ -437,10 +425,12 @@ class GameService {
     getGameInfoAfterShot() {
         const gameInfo = this.getCurrentGameInfo();
         const shotStatus = this.state.lastShotStatus;
+        const isGameOver = this.state.gameOver;
         const message = this.getMessageByStatus();
         return {
             ...gameInfo,
             shotStatus: shotStatus,
+            isGameOver: isGameOver,
             message: message,
         }
     }
@@ -468,6 +458,24 @@ class GameService {
                 [opponentPlayer]: opponentPlayerField
             }   
         }
+    }
+
+    getMessageByStatus() {
+        const status = this.state.lastShotStatus;
+        let message = '';
+        switch (status) {
+            case 'sunk':
+                message = 'The ship is sunk';
+                break;
+            case 'shelled':
+                message = 'The ship is shelled';
+                break;
+            case 'past':
+                message = `You didn't hit the enemy ship`;
+                break;
+        }
+        if (this.state.gameOver) message += '. Game over. You won!'
+        return message;
     }
 
     getCurrentPlayer(gameId) {
