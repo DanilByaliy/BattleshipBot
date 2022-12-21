@@ -68,7 +68,7 @@ describe('GameService class:', () => {
         test('should return info about failed shot', async () => {
             jest.spyOn(mockField, "getCellContent").mockImplementation((_) => 'noShip');
 
-            const shotResult = await testGameService.shot('@first@second', '@first', 'a1');
+            const shotResult = await testGameService.shot(testGameId, '@first', 'a1');
             const { shotStatus, message, isGameOver, currentPlayer, opponentPlayer } = shotResult;
 
             expect(shotStatus).toBe('past');
@@ -81,15 +81,15 @@ describe('GameService class:', () => {
         test(`should return an error if a player tries to roll when it's not their turn`, async () => {
             jest.spyOn(mockField, "getCellContent").mockImplementation((_) => 'noShip');
 
-            await testGameService.shot('@first@second', '@first', 'a1');
+            await testGameService.shot(testGameId, '@first', 'a1');
 
-            expect(async () => await testGameService.shot('@first@second', '@first', 'a1')).rejects.toThrow('Not your turn')
+            expect(async () => await testGameService.shot(testGameId, '@first', 'a1')).rejects.toThrow('Not your turn')
         })
 
         test('should return information about the shelling of the three-deck ship when it happened', async () => {
             jest.spyOn(mockField, "getCellContent").mockImplementation((_) => 'threeDeck');
 
-            const shotResult = await testGameService.shot('@first@second', '@first', 'a1');
+            const shotResult = await testGameService.shot(testGameId, '@first', 'a1');
             const { shotStatus, message, isGameOver, currentPlayer, opponentPlayer } = shotResult;
 
             expect(shotStatus).toBe('shelled');
@@ -102,7 +102,7 @@ describe('GameService class:', () => {
         test('should return information about the shelling of the two-deck ship when it happened', async () => {
             jest.spyOn(mockField, "getCellContent").mockImplementation((_) => 'firstTwoDeck');
 
-            const shotResult = await testGameService.shot('@first@second', '@first', 'a1');
+            const shotResult = await testGameService.shot(testGameId, '@first', 'a1');
             const { shotStatus, message, isGameOver, currentPlayer, opponentPlayer } = shotResult;
 
             expect(shotStatus).toBe('shelled');
@@ -128,8 +128,8 @@ describe('GameService class:', () => {
         test('should return information about the sinking of a two-deck ship when it happened', async () => {
             jest.spyOn(mockField, "getCellContent").mockImplementation((_) => 'firstTwoDeck');
 
-            await testGameService.shot('@first@second', '@first', 'a1');
-            const shotResult = await testGameService.shot('@first@second', '@first', 'a2');
+            await testGameService.shot(testGameId, '@first', 'a1');
+            const shotResult = await testGameService.shot(testGameId, '@first', 'a2');
 
             const { shotStatus, message, isGameOver, currentPlayer, opponentPlayer } = shotResult;
             expect(shotStatus).toBe('sunk');
@@ -142,9 +142,9 @@ describe('GameService class:', () => {
         test('should return information about the sinking of a three-deck ship when it happened', async () => {
             jest.spyOn(mockField, "getCellContent").mockImplementation((_) => 'threeDeck');
 
-            await testGameService.shot('@first@second', '@first', 'a1');
-            await testGameService.shot('@first@second', '@first', 'a2');
-            const shotResult = await testGameService.shot('@first@second', '@first', 'a3');
+            await testGameService.shot(testGameId, '@first', 'a1');
+            await testGameService.shot(testGameId, '@first', 'a2');
+            const shotResult = await testGameService.shot(testGameId, '@first', 'a3');
 
             const { shotStatus, message, isGameOver, currentPlayer, opponentPlayer } = shotResult;
             expect(shotStatus).toBe('sunk');
@@ -156,21 +156,21 @@ describe('GameService class:', () => {
 
         test('should return game completion information when it happened', async () => {
             jest.spyOn(mockField, "getCellContent").mockImplementation((_) => 'threeDeck');
-            await testGameService.shot('@first@second', '@first', 'a1');
-            await testGameService.shot('@first@second', '@first', 'a2');
-            await testGameService.shot('@first@second', '@first', 'a3');
+            await testGameService.shot(testGameId, '@first', 'a1');
+            await testGameService.shot(testGameId, '@first', 'a2');
+            await testGameService.shot(testGameId, '@first', 'a3');
     
             jest.spyOn(mockField, "getCellContent").mockImplementation((_) => 'firstTwoDeck');
-            await testGameService.shot('@first@second', '@first', 'c1');
-            await testGameService.shot('@first@second', '@first', 'c2');
+            await testGameService.shot(testGameId, '@first', 'c1');
+            await testGameService.shot(testGameId, '@first', 'c2');
     
             jest.spyOn(mockField, "getCellContent").mockImplementation((_) => 'secondTwoDeck');
-            await testGameService.shot('@first@second', '@first', 'e1');
-            await testGameService.shot('@first@second', '@first', 'e2');
+            await testGameService.shot(testGameId, '@first', 'e1');
+            await testGameService.shot(testGameId, '@first', 'e2');
     
             jest.spyOn(mockField, "getCellContent").mockImplementation((_) => 'oneDeck');
-            await testGameService.shot('@first@second', '@first', 'g1');
-            await testGameService.shot('@first@second', '@first', 'g3');
+            await testGameService.shot(testGameId, '@first', 'g1');
+            await testGameService.shot(testGameId, '@first', 'g3');
     
     
             const shotResult = await testGameService.shot(testGameId, '@first', 'g5');
@@ -182,7 +182,7 @@ describe('GameService class:', () => {
             expect(isGameOver).toBe(true);
             expect(currentPlayer).toBe('@first');
             expect(opponentPlayer).toBe('@second');
-            expect(async () => await testGameService.shot('@first@second', '@first', 'g7')).rejects.toThrow('Game Over');
+            expect(async () => await testGameService.shot(testGameId, '@first', 'g7')).rejects.toThrow('Game Over');
         })
     })
 });
