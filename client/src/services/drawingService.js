@@ -88,4 +88,34 @@ class DrawingService {
         ctx.stroke();
         ctx.closePath();
     }
+
+    drawingAllShips(array, path, ctx, img) {
+        for (let i = 1; i < 9; i++) {
+            for (let j = 1; j < 9; j++) {
+                if (array[i][j] === 1) {
+                    drawingShip(i, j, ctx);
+                }
+            }
+        }
+    }
+
+    drawingShip(i, j, ctx) {
+        i -= 1;
+        j -= 1;
+        ctx.beginPath();
+        ctx.moveTo(300 + i * 300, 200 + j * 300);
+        ctx.lineWidth = 30;
+        ctx.lineTo(420 + i * 300, 300 + j * 300);
+        ctx.stroke();
+        ctx.lineWidth = 26;
+        ctx.lineTo(300 + i * 300, 420 + j * 300);
+        ctx.stroke();
+        ctx.lineWidth = 22;
+        ctx.lineTo(185 + i * 300, 300 + j * 300);
+        ctx.stroke();
+        ctx.lineWidth = 18;
+        ctx.lineTo(300 + i * 300, 150 + j * 300);
+        ctx.stroke();
+        ctx.closePath();
+    }
 }
