@@ -156,4 +156,33 @@ class DrawingService {
 
         await this.makeFile(playerId, img);
     }
+
+    drawingGoodShot(i, j, n, ctx) {
+        i -= 1;
+        j -= 1;
+        ctx.beginPath();
+        ctx.moveTo(2400 * n + 180 + i * 300, 180 + j * 300);
+        ctx.lineTo(2400 * n + 420 + i * 300, 420 + j * 300);
+        ctx.moveTo(2400 * n + 420 + i * 300, 180 + j * 300);
+        ctx.lineTo(2400 * n + 180 + i * 300, 420 + j * 300);
+        ctx.stroke();
+        ctx.closePath();
+    }
+      
+    drawingBadShot(i, j, n, ctx) {
+        ctx.beginPath();
+        ctx.arc(2400 * n + 300 * i, 300 * j, 50, 0, Math.PI, false);
+        ctx.arc(2400 * n + 300 * i, 300 * j, 50, 0, Math.PI, true);
+        ctx.closePath();
+        ctx.fill();
+    }
+
+    async makeFile(path, img) {
+        await PImage.encodePNGToStream(img, fs.createWriteStream(`${path}.png`))
+            .then(() => {
+                console.log(`wrote out the png file to ${path}`);
+        }).catch(() => {
+            console.log('there was an error writing');
+        });
+    }
 }
