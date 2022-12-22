@@ -118,4 +118,42 @@ class DrawingService {
         ctx.stroke();
         ctx.closePath();
     }
+
+    async updateCurrentPlayerBoard(playerId, board) {
+        const n = 2;
+
+        const { img, ctx } = this.db.get(playerId);
+
+        for (let x = 0; x < 7; x++) {
+            for (let y = 0; y < 7; y++) {
+                if (board[x][y] === -1) {
+                    this.drawingGoodShot(x, y, n);
+                } 
+                else if (board[x][y] === 2) {
+                    this.drawingBadShot(x, y, n);
+                }
+            }
+        }
+
+        await this.makeFile(playerId, img);
+    }
+
+    async updateOpponentPlayerBoard(playerId, board) {
+        const n = 1;
+
+        const { img, ctx } = this.db.get(playerId);
+
+        for (let x = 0; x < 7; x++) {
+            for (let y = 0; y < 7; y++) {
+                if (board[x][y] === -1) {
+                    this.drawingGoodShot(x, y, n);
+                } 
+                else if (board[x][y] === 2) {
+                    this.drawingBadShot(x, y, n);
+                }
+            }
+        }
+
+        await this.makeFile(playerId, img);
+    }
 }
