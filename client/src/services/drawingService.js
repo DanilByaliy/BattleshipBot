@@ -40,16 +40,38 @@ class DrawingService {
     drawingGameField(n, ctx) {
         ctx.fillRect(2400 * (n - 1) + 130, 130, 2140, 2140);
         ctx.clearRect(2400 * (n - 1) + 150, 150, 2100, 2100);
-        drawingLetters(n - 1, ctx);
-        drawingNumbers(n - 1, ctx);
+        this.drawAxes();
       
         for (let i = 1; i < 7; i++) {
-            drawingVerticalLines(ctx, i, n - 1);
-            drawingHorisontalLines(ctx, i, n - 1);
+            this.drawVerticalLines(ctx, i, n - 1);
+            this.drawHorisontalLines(ctx, i, n - 1);
         }
     }
 
-    drawingVerticalLines(ctx, i, n) {
+    drawAxes(n, ctx) {
+        font.load(() => {
+            this.drawLetters(n, ctx);
+            this.drawNumbers(n, ctx);
+        });
+    }
+      
+    drawLetters(n, ctx) {    
+        for (let i = 0; i < 7; i++) {
+            ctx.fillStyle = '#000000';
+            ctx.font = '120pt MyFont';
+            ctx.fillText('abcdefg'[i], 2400 * n + 270 + 300 * i, 95);
+        }
+    }
+
+    drawNumbers(n, ctx) {
+        for (let i = 0; i < 7; i++) {
+            ctx.fillStyle = '#000000';
+            ctx.font = '120pt MyFont';
+            ctx.fillText((i + 1).toString(), 2400 * n + 30, 330 + 300 * i);
+        }
+    }
+
+    drawVerticalLines(ctx, i, n) {
         ctx.beginPath();
         ctx.moveTo(2400 * n + 150 + 300 * i, 2250);
         ctx.lineTo(2400 * n + 150 + 300 * i, 150);
@@ -58,7 +80,7 @@ class DrawingService {
         ctx.closePath();
     }
 
-    drawingHorisontalLines(ctx, i, n) {
+    drawHorisontalLines(ctx, i, n) {
         ctx.beginPath();
         ctx.moveTo(2400 * n + 2250, 150 + 300 * i);
         ctx.lineTo(2400 * n + 150, 150 + 300 * i);
@@ -66,5 +88,4 @@ class DrawingService {
         ctx.stroke();
         ctx.closePath();
     }
-
 }
