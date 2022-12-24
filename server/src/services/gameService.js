@@ -4,6 +4,8 @@ const gameDAO = require('../dao/gameDAO');
 
 class Field {
     value
+    field
+    changesField
     neighborCells = [[-1, -1], [-1, 0], [-1, 1], 
         [0, 1], [1, 1], [1, 0], [1, -1], [0, -1]]
 
@@ -157,20 +159,32 @@ class Field {
     }
 
     updateField(cell, status) {
+        this.normalizeField();
         const {x, y} = this.parseCellToCoordinates(cell);
     
         switch (status) {
             case 'sunk':
                 this.value[x][y] += '0';
                 const sunkShip = this.getCell(x, y);
-                this.makeWrapOf(sunkShip, '6');
+                this.makeWrapOf(sunkShip, '68');
+                this.value[x][y] += '8';
                 break;
             case 'shelled':
-                this.value[x][y] += '0';
+                this.value[x][y] += '08';
                 break;
             case 'past':
-                this.value[x][y] = '6';
+                this.value[x][y] = '68';
                 break;
+        }
+    }
+
+    normalizeField() {
+        for (let x = 0; x < 9; x++) {
+            for (let y = 0; y < 9; y++) {
+                if (this.isJustShelledShip(x, y) || this.isJustFiredCell(x, y)) {
+                    this.value[x][y] = this.value[x][y].slice(0, -1);
+                }
+            }
         }
     }
 
@@ -222,7 +236,7 @@ class Field {
     }
 
     isShelledShip(x, y) {
-        return ['110', '120', '130', '210', '220', '30']
+        return ['110', '120', '130', '210', '220', '30', '1108', '1208', '1308', '2108', '2208', '308']
         .includes(this.value[x][y]);
     }
 
@@ -231,11 +245,48 @@ class Field {
     }
 
     isFiredCell(x, y) {
-        return this.value[x][y] === '6';
+        return ['6', '68']
+        .includes(this.value[x][y]);
     }
 
     markCellAsFiredCell(x, y) {
         this.field[x-1][y-1] = 2;
+    }
+
+    getChangesField() {
+        this.changesField = this.createEmptyFieldSizeOf(7);
+        for (let x = 1; x < 8; x++) {
+            for (let y = 1; y < 8; y++) {
+                this.normalizeCellIfItHasJustBeenChanged(x, y);
+            }
+        }
+        return this.changesField;
+    }
+
+    normalizeCellIfItHasJustBeenChanged(x, y) {
+        if (this.isJustFiredCell(x, y)) {
+            this.markCellAsJustFiredCell(x, y);
+        }
+        else if (this.isJustShelledShip(x, y)) {
+            this.markСellAsJustShelledShip(x, y);
+        }
+    }
+
+    isJustFiredCell(x, y) {
+        return this.value[x][y] === '68';
+    }
+
+    markCellAsJustFiredCell(x, y) {
+        this.changesField[x-1][y-1] = 2;
+    }
+
+    isJustShelledShip(x, y) {
+        return ['1108', '1208', '1308', '2108', '2208', '308']
+        .includes(this.value[x][y]);
+    }
+
+    markСellAsJustShelledShip(x, y) {
+        this.changesField[x-1][y-1] = -1;
     }
 }
 
@@ -445,10 +496,12 @@ class GameService {
     
         this.field.set(currentPlayerRawField);
         const currentPlayerField = this.field.getField();
+        const currentPlayerChangesField = this.field.getChangesField();
     
         this.field.set(opponentPlayerRawField);
         const opponentPlayerField = this.field.getField();
-    
+        const opponentPlayerChangesField = this.field.getChangesField();
+
         return {
             gameId: gameId,
             currentPlayer: currentPlayer,
@@ -456,7 +509,11 @@ class GameService {
             boards: {
                 [currentPlayer]: currentPlayerField,
                 [opponentPlayer]: opponentPlayerField
-            }   
+            },
+            changes: {
+                [currentPlayer]: currentPlayerChangesField,
+                [opponentPlayer]: opponentPlayerChangesField
+            }
         }
     }
 
