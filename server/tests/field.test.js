@@ -82,15 +82,11 @@ describe('Field class:', () => {
         field.setInitialField();
 
         field.placeThreeDeckShipHorisontallyFrom(2, 3);
-        const contentOfCellB3 = field.getCellContent('b3');
-        const contentOfCellB4 = field.getCellContent('b4');
-        const contentOfCellB5 = field.getCellContent('b5');
-        const gameBoard = field.getField();
 
-        expect(contentOfCellB3).toEqual('threeDeck');
-        expect(contentOfCellB4).toEqual('threeDeck');
-        expect(contentOfCellB5).toEqual('threeDeck');
-        expect(gameBoard).toEqual([
+        expect(field.getCellContent('b3')).toEqual('threeDeck');
+        expect(field.getCellContent('b4')).toEqual('threeDeck');
+        expect(field.getCellContent('b5')).toEqual('threeDeck');
+        expect(field.getField()).toEqual([
             [0, 0, 0, 0, 0, 0, 0],
             [0, 0, 1, 1, 1, 0, 0],
             [0, 0, 0, 0, 0, 0, 0],
@@ -107,15 +103,11 @@ describe('Field class:', () => {
 
         field.setInitialField();
         field.placeThreeDeckShipVerticallyFrom(2, 3);
-        const contentOfCellB3 = field.getCellContent('b3');
-        const contentOfCellC3 = field.getCellContent('c3');
-        const contentOfCellD3 = field.getCellContent('d3');
-        const gameBoard = field.getField();
 
-        expect(contentOfCellB3).toEqual('threeDeck');
-        expect(contentOfCellC3).toEqual('threeDeck');
-        expect(contentOfCellD3).toEqual('threeDeck');
-        expect(gameBoard).toEqual([
+        expect(field.getCellContent('b3')).toEqual('threeDeck');
+        expect(field.getCellContent('c3')).toEqual('threeDeck');
+        expect(field.getCellContent('d3')).toEqual('threeDeck');
+        expect(field.getField()).toEqual([
             [0, 0, 0, 0, 0, 0, 0],
             [0, 0, 1, 0, 0, 0, 0],
             [0, 0, 1, 0, 0, 0, 0],
@@ -187,8 +179,6 @@ describe('Field class:', () => {
         const contentOfCellF5 = field.getCellContent('f5');
         const contentOfCellF6 = field.getCellContent('f6');
 
-
-        const gameBoard = field.getField();
         expect(contentOfCellA1).toEqual('oneDeck');
         expect(contentOfCellB3).toEqual('oneDeck');
         expect(contentOfCellG2).toEqual('oneDeck');
@@ -196,15 +186,6 @@ describe('Field class:', () => {
         expect(contentOfCellB7).toEqual('firstTwoDeck');
         expect(contentOfCellF5).toEqual('secondTwoDeck');
         expect(contentOfCellF6).toEqual('secondTwoDeck');
-        expect(gameBoard).toEqual([
-            [1, 0, 0, 0, 0, 0, 1],
-            [0, 0, 1, 0, 0, 0, 1],
-            [0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 1, 1, 0],
-            [0, 1, 0, 0, 0, 0, 0],
-        ]);
     })
 
     describe('- The updateField method:', () => {
@@ -217,9 +198,8 @@ describe('Field class:', () => {
             field.updateField('c7', 'past');
             field.updateField('d4', 'past');
             field.updateField('g6', 'past');
-            const gameBoard = field.getField();
 
-            expect(gameBoard).toEqual([
+            expect(field.getField()).toEqual([
                 [2, 0, 0, 0, 0, 0, 0],
                 [0, 0, 2, 0, 0, 0, 0],
                 [0, 0, 0, 0, 0, 0, 2],
@@ -236,11 +216,9 @@ describe('Field class:', () => {
             field.placeThreeDeckShipHorisontallyFrom(2, 3);
             
             field.updateField('b3', 'shelled');
-            const contentOfCellB3 = field.getCellContent('b3');
-            const gameBoard = field.getField();
     
-            expect(contentOfCellB3).toEqual('noShip');
-            expect(gameBoard).toEqual([
+            expect(field.getCellContent('b3')).toEqual('noShip');
+            expect(field.getField()).toEqual([
                 [0, 0, 0, 0, 0, 0, 0],
                 [0, 0, -1, 1, 1, 0, 0],
                 [0, 0, 0, 0, 0, 0, 0],
@@ -259,15 +237,11 @@ describe('Field class:', () => {
             field.updateField('b3', 'shelled');
             field.updateField('b4', 'shelled');
             field.updateField('b5', 'sunk');
-            const contentOfCellB3 = field.getCellContent('b3');
-            const contentOfCellB4 = field.getCellContent('b4');
-            const contentOfCellB5 = field.getCellContent('b5');
-            const gameBoard = field.getField();
 
-            expect(contentOfCellB3).toEqual('noShip');
-            expect(contentOfCellB4).toEqual('noShip');
-            expect(contentOfCellB5).toEqual('noShip');
-            expect(gameBoard).toEqual([
+            expect(field.getCellContent('b3')).toEqual('noShip');
+            expect(field.getCellContent('b4')).toEqual('noShip');
+            expect(field.getCellContent('b5')).toEqual('noShip');
+            expect(field.getField()).toEqual([
                 [0, 2,  2,  2,  2,  2, 0],
                 [0, 2, -1, -1, -1,  2, 0],
                 [0, 2,  2,  2,  2,  2, 0],
@@ -286,15 +260,11 @@ describe('Field class:', () => {
             field.updateField('a1', 'sunk');
             field.updateField('b3', 'sunk');
             field.updateField('g2', 'sunk');
-            const contentOfCellA1 = field.getCellContent('a1');
-            const contentOfCellB3 = field.getCellContent('b3');
-            const contentOfCellG2 = field.getCellContent('g2');
-            const gameBoard = field.getField();
     
-            expect(contentOfCellA1).toEqual('noShip');
-            expect(contentOfCellB3).toEqual('noShip');
-            expect(contentOfCellG2).toEqual('noShip');
-            expect(gameBoard).toEqual([
+            expect(field.getCellContent('a1')).toEqual('noShip');
+            expect(field.getCellContent('b3')).toEqual('noShip');
+            expect(field.getCellContent('g2')).toEqual('noShip');
+            expect(field.getField()).toEqual([
                 [-1,  2,  2, 2, 0, 0, 1],
                 [ 2,  2, -1, 2, 0, 0, 1],
                 [ 0,  2,  2, 2, 0, 0, 0],
@@ -312,13 +282,10 @@ describe('Field class:', () => {
             
             field.updateField('f5', 'shelled');
             field.updateField('f6', 'sunk');
-            const contentOfCellF5 = field.getCellContent('f5');
-            const contentOfCellF6 = field.getCellContent('f6');
-            const gameBoard = field.getField();
     
-            expect(contentOfCellF5).toEqual('noShip');
-            expect(contentOfCellF6).toEqual('noShip');
-            expect(gameBoard).toEqual([
+            expect(field.getCellContent('f5')).toEqual('noShip');
+            expect(field.getCellContent('f6')).toEqual('noShip');
+            expect(field.getField()).toEqual([
                 [1, 0, 0, 0,  0,  0, 1],
                 [0, 0, 1, 0,  0,  0, 1],
                 [0, 0, 0, 0,  0,  0, 0],
