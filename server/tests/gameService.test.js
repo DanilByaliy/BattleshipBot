@@ -38,6 +38,7 @@ jest.spyOn(mockField, "createRandomField").mockImplementation(() => {});
 jest.spyOn(mockField, "set").mockImplementation(() => {});
 jest.spyOn(mockField, "getCellContent").mockImplementation(() => {});
 jest.spyOn(mockField, "updateField").mockImplementation(() => {});
+jest.spyOn(mockField, "getChangesField").mockImplementation(() => {});
 jest.spyOn(mockField, "getRawField").mockImplementation(() => {});
 jest.spyOn(mockField, "getField").mockImplementation(() => {});
 

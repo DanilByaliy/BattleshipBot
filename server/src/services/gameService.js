@@ -496,11 +496,23 @@ class GameService {
     
         this.field.set(currentPlayerRawField);
         const currentPlayerField = this.field.getField();
-        const currentPlayerChangesField = this.field.getChangesField();
     
         this.field.set(opponentPlayerRawField);
         const opponentPlayerField = this.field.getField();
-        const opponentPlayerChangesField = this.field.getChangesField();
+
+        let changes = {};
+        
+        if (this.isUnsuccessfulShot()) {
+            this.field.set(currentPlayerRawField);
+            changes.board = this.field.getChangesField();
+            changes.currentPlayer = currentPlayer;
+            changes.opponentPlayer = opponentPlayer;
+        } else {
+            this.field.set(opponentPlayerRawField);
+            changes.board = this.field.getChangesField();
+            changes.currentPlayer = opponentPlayer;
+            changes.opponentPlayer = currentPlayer;
+        }
 
         return {
             gameId: gameId,
@@ -510,10 +522,7 @@ class GameService {
                 [currentPlayer]: currentPlayerField,
                 [opponentPlayer]: opponentPlayerField
             },
-            changes: {
-                [currentPlayer]: currentPlayerChangesField,
-                [opponentPlayer]: opponentPlayerChangesField
-            }
+            changes: changes
         }
     }
 
