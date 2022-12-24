@@ -296,4 +296,85 @@ describe('Field class:', () => {
             ]);
         })
     })
+
+    test('The getChangesField method should return the location of the fired ship', () => {
+        const field = new Field();
+        field.setInitialField();
+        field.set(testField);
+        field.updateField('f5', 'shelled');
+
+        const gameBoard = field.getChangesField();
+
+        expect(gameBoard).toEqual([
+            [0, 0, 0, 0,  0, 0, 0],
+            [0, 0, 0, 0,  0, 0, 0],
+            [0, 0, 0, 0,  0, 0, 0],
+            [0, 0, 0, 0,  0, 0, 0],
+            [0, 0, 0, 0,  0, 0, 0],
+            [0, 0, 0, 0, -1, 0, 0],
+            [0, 0, 0, 0,  0, 0, 0],
+        ]);
+    })
+
+    test(`The getChangesField method should return only the latest changes 
+            (which occurred since the field was last updated)`, () => {
+        const field = new Field();
+        field.setInitialField();
+        field.set(testField);
+        
+        field.updateField('f5', 'shelled');
+        field.updateField('f6', 'sunk');
+        const gameBoard = field.getChangesField();
+
+        expect(gameBoard).toEqual([
+            [0, 0, 0, 0, 0,  0, 0],
+            [0, 0, 0, 0, 0,  0, 0],
+            [0, 0, 0, 0, 0,  0, 0],
+            [0, 0, 0, 0, 0,  0, 0],
+            [0, 0, 0, 2, 2,  2, 2],
+            [0, 0, 0, 2, 0, -1, 2],
+            [0, 0, 0, 2, 2,  2, 2],
+        ]);
+    })
+
+    test(`The getChangesField method should return the location of only the last sunk ship`, () => {
+        const field = new Field();
+        field.setInitialField();
+        field.set(testField);
+        
+        field.updateField('a1', 'sunk');
+        field.updateField('g2', 'sunk');
+        const gameBoard = field.getChangesField();
+
+        expect(gameBoard).toEqual([
+            [0, 0, 0, 0,  0, 0, 0],
+            [0, 0, 0, 0,  0, 0, 0],
+            [0, 0, 0, 0,  0, 0, 0],
+            [0, 0, 0, 0,  0, 0, 0],
+            [0, 0, 0, 0,  0, 0, 0],
+            [2, 2, 2, 0,  0, 0, 0],
+            [2, -1, 2, 0,  0, 0, 0],
+        ]);
+    })
+
+    test(`The getChangesField method should return the location of only the last cell without the fired ship`, () => {
+        const field = new Field();
+        field.setInitialField();
+        field.set(testField);
+        
+        field.updateField('b2', 'past');
+        field.updateField('a2', 'past');
+        field.updateField('b1', 'past');
+        const gameBoard = field.getChangesField();
+
+        expect(gameBoard).toEqual([
+            [0, 0, 0, 0,  0, 0, 0],
+            [2, 0, 0, 0,  0, 0, 0],
+            [0, 0, 0, 0,  0, 0, 0],
+            [0, 0, 0, 0,  0, 0, 0],
+            [0, 0, 0, 0,  0, 0, 0],
+            [0, 0, 0, 0,  0, 0, 0],
+            [0, 0, 0, 0,  0, 0, 0],
+        ]);
+    })
 })
