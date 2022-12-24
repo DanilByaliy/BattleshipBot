@@ -127,33 +127,51 @@ describe('Field class:', () => {
     })
 
     test('The placeOneDeckShip function should place one deck on the field', () => {
-        const field = new Field();
-        field.setInitialField();
-
-        field.placeOneDeckShip();
-        const gameBoard = field.getField();
-
-        expect(getNumberOfDeck(gameBoard)).toEqual(1);
+        for (let i = 0; i < 1000; i++) {
+            const field = new Field();
+            field.setInitialField();
+    
+            field.placeOneDeckShip();
+            const gameBoard = field.getField();
+    
+            expect(getNumberOfDeck(gameBoard)).toEqual(1);
+        }        
     })
 
     test('The placeTwoDeckShip function should place two deck on the field', () => {
-        const field = new Field();
-        field.setInitialField();
+        for (let i = 0; i < 1000; i++) {
+            const field = new Field();
+            field.setInitialField();
+    
+            field.placeTwoDeckShip();
+            const gameBoard = field.getField();
+    
+            expect(getNumberOfDeck(gameBoard)).toEqual(2);
+        }
+    })
 
-        field.placeTwoDeckShip();
-        const gameBoard = field.getField();
-
-        expect(getNumberOfDeck(gameBoard)).toEqual(2);
+    test('The placeThreeDeckShip function should place three deck on the field', () => {
+        for (let i = 0; i < 1000; i++) {
+            const field = new Field();
+            field.setInitialField();
+    
+            field.placeThreeDeckShip();
+            const gameBoard = field.getField();
+    
+            expect(getNumberOfDeck(gameBoard)).toEqual(3);
+        }
     })
 
     test('The createRandomField function should place ten deck on the field', () => {
-        const field = new Field();
-        field.setInitialField();
-
-        field.createRandomField();
-        const gameBoard = field.getField();
-
-        expect(getNumberOfDeck(gameBoard)).toEqual(10);
+        for (let i = 0; i < 1000; i++) {
+            const field = new Field();
+            field.setInitialField();
+    
+            field.createRandomField();
+            const gameBoard = field.getField();
+    
+            expect(getNumberOfDeck(gameBoard)).toEqual(10);
+        }
     })
 
     test('The getCellContent function should return type of ship', () => {
